@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hcg-color-picker — Documentation</title>
+    <link rel="stylesheet" href="hcg-color.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0f1117;
+            --bg2:       #1a1d27;
+            --bg3:       #22263a;
+            --border:    #2e3250;
+            --accent:    #6c8cff;
+            --accent2:   #a78bfa;
+            --text:      #e2e8f0;
+            --text-muted:#8892a4;
+            --green:     #34d399;
+            --red:       #f87171;
+            --yellow:    #fbbf24;
+            --radius:    10px;
+            --nav-w:     240px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        /* ── Layout ─────────────────────────────── */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ─────────────────────────────── */
+        .sidebar {
+            width: var(--nav-w);
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            padding: 28px 0 40px;
+        }
+
+        .sidebar-logo {
+            padding: 0 20px 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-logo span {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .sidebar-logo a {
+            display: block;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            margin-top: 4px;
+        }
+
+        .nav-group { margin-bottom: 6px; }
+
+        .nav-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 8px 20px 4px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 6px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            border-left: 2px solid transparent;
+            transition: color .15s, border-color .15s, background .15s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+            border-left-color: var(--accent);
+            background: rgba(108,140,255,.07);
+        }
+
+        /* ── Main ───────────────────────────────── */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 56px 64px 100px;
+            max-width: 900px;
+        }
+
+        /* ── Hero ───────────────────────────────── */
+        .hero {
+            margin-bottom: 64px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(108,140,255,.15);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(108,140,255,.3);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 14px;
+            background: linear-gradient(135deg, #fff 30%, var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: var(--text-muted);
+            max-width: 560px;
+            margin-bottom: 28px;
+        }
+
+        .hero-links { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity .15s, transform .1s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover { opacity: .85; transform: translateY(-1px); }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+
+        /* ── Demo strip ─────────────────────────── */
+        .demo-strip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 64px;
+            flex-wrap: wrap;
+        }
+
+        .demo-strip span {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+
+        .color-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 2px solid rgba(255,255,255,.15);
+            cursor: pointer;
+            transition: transform .1s;
+        }
+        .color-btn:hover { transform: scale(1.1); }
+
+        /* ── Sections ───────────────────────────── */
+        section { margin-bottom: 72px; scroll-margin-top: 32px; }
+
+        .section-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 28px 0 10px;
+            color: var(--text);
+        }
+
+        p { color: var(--text-muted); margin-bottom: 14px; }
+
+        /* ── Features ───────────────────────────── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .feature-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+        }
+
+        .feature-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .feature-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .feature-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* ── Code blocks ─────────────────────────── */
+        .code-block {
+            position: relative;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin: 16px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            background: var(--bg3);
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .code-lang {
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: color .15s, border-color .15s;
+        }
+        .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+        .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+        pre {
+            padding: 20px;
+            overflow-x: auto;
+            font-size: 13.5px;
+            line-height: 1.8;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            color: var(--text);
+        }
+
+        /* Syntax colours */
+        .kw  { color: #c792ea; }   /* keyword */
+        .fn  { color: #82aaff; }   /* function / method */
+        .str { color: #c3e88d; }   /* string */
+        .num { color: #f78c6c; }   /* number */
+        .cmt { color: #546e7a; font-style: italic; }  /* comment */
+        .cls { color: #ffcb6b; }   /* class */
+        .tag { color: #f07178; }   /* html tag */
+        .atr { color: #c792ea; }   /* attribute */
+        .val { color: #c3e88d; }   /* value */
+        .pm  { color: #89ddff; }   /* punctuation / param */
+
+        /* ── Inline code ─────────────────────────── */
+        p code, li code, td code {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 13px;
+            color: var(--accent2);
+        }
+
+        /* ── Tables ──────────────────────────────── */
+        .table-wrap { overflow-x: auto; margin: 16px 0; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 10px 16px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        tbody td {
+            padding: 11px 16px;
+            border: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--text-muted);
+        }
+
+        tbody tr:hover td { background: rgba(255,255,255,.02); }
+
+        td:first-child code { color: var(--green); }
+
+        .type-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(108,140,255,.12);
+            color: var(--accent);
+            border: 1px solid rgba(108,140,255,.2);
+        }
+
+        .default-badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(167,139,250,.1);
+            color: var(--accent2);
+            border: 1px solid rgba(167,139,250,.2);
+        }
+
+        /* ── Method cards ────────────────────────── */
+        .method-list { display: flex; flex-direction: column; gap: 24px; margin-top: 8px; }
+
+        .method-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .method-head {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+        }
+
+        .method-name {
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .method-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .method-body { padding: 16px 20px; }
+
+        .method-body p { font-size: 13.5px; margin-bottom: 10px; }
+
+        /* ── Event cards ─────────────────────────── */
+        .event-list { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+
+        .event-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .event-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+        }
+
+        .event-name {
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--yellow);
+        }
+
+        .event-body { padding: 16px 20px; }
+
+        /* ── Install block ───────────────────────── */
+        .install-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 20px;
+            margin: 16px 0;
+        }
+
+        .install-block code {
+            font-size: 15px;
+            color: var(--green);
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        /* ── Divider ─────────────────────────────── */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0 0 72px;
+        }
+
+        /* ── Footer ──────────────────────────────── */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 28px 0 0;
+            color: var(--text-muted);
+            font-size: 13px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        footer a { color: var(--text-muted); text-decoration: none; }
+        footer a:hover { color: var(--accent); }
+
+        /* ── Responsive ──────────────────────────── */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main { padding: 36px 24px 80px; }
+            .hero h1 { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- ── Sidebar ─────────────────────────────── -->
+    <nav class="sidebar">
+        <div class="sidebar-logo">
+            <span>Vanilla JS</span>
+            <a href="https://www.html-code-generator.com/" target="_blank">HTML Code Generator</a>
+        </div>
+
+        <div class="nav-group">
+            <span class="nav-label">Getting Started</span>
+            <a class="nav-link active" href="#installation">Installation</a>
+            <a class="nav-link" href="#features">Features</a>
+            <a class="nav-link" href="#usage">Basic Usage</a>
+        </div>
+
+        <div class="nav-group">
+            <span class="nav-label">API Reference</span>
+            <a class="nav-link" href="#options">Options</a>
+            <a class="nav-link" href="#methods">Instance Methods</a>
+            <a class="nav-link" href="#events">Events</a>
+        </div>
+
+        <div class="nav-group">
+            <span class="nav-label">More</span>
+            <a class="nav-link" href="#color-formats">Color Formats</a>
+            <a class="nav-link" href="#multiple">Multiple Instances</a>
+            <a class="nav-link" href="#browser">Browser Support</a>
+        </div>
+    </nav>
+
+    <!-- ── Main ─────────────────────────────────── -->
+    <main class="main">
+
+        <!-- Hero -->
+        <div class="hero">
+            <div class="badge">Open Source · MIT License</div>
+            <h1>hcg-color-picker</h1>
+            <p>A Google Chrome style color picker — lightweight, dependency-free, alpha support, EyeDropper API.</p>
+            <div class="hero-links">
+                <a class="btn btn-primary" href="https://github.com/html-code-generator/hcg-color-picker" target="_blank">
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                    GitHub
+                </a>
+                <a class="btn btn-outline" href="https://www.npmjs.com/package/hcg-color-picker" target="_blank">
+                    <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M0 0v24h24V0H0zm19.2 19.2H4.8V4.8h14.4v14.4zM8 8v8h4v-6h2v6h2V8H8z"/></svg>
+                    npm
+                </a>
+                <a class="btn btn-outline" href="https://www.html-code-generator.com/" target="_blank">Website</a>
+            </div>
+        </div>
+
+        <!-- Live Demo -->
+        <div class="demo-strip">
+            <span>Live demo →</span>
+            <button class="color-btn" id="demo1" title="Red"></button>
+            <button class="color-btn" id="demo2" title="Blue"></button>
+            <button class="color-btn" id="demo3" title="Green (no alpha)"></button>
+            <button class="color-btn" id="demo4" title="Purple"></button>
+        </div>
+
+        <!-- Installation -->
+        <section id="installation">
+            <div class="section-tag">Getting Started</div>
+            <h2>Installation</h2>
+            <p>Include the stylesheet and script in your HTML file:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">HTML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"hcg-color.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"hcg-color.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+            </div>
+
+            <p>Or install via npm:</p>
+
+            <div class="install-block">
+                <code>npm install hcg-color-picker</code>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS — ESM</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">import</span> hcgColor <span class="kw">from</span> <span class="str">'hcg-color-picker'</span><span class="pm">;</span>
+<span class="kw">import</span> <span class="str">'hcg-color-picker/hcg-color.css'</span><span class="pm">;</span></code></pre>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Features -->
+        <section id="features">
+            <div class="section-tag">Overview</div>
+            <h2>Features</h2>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Zero dependencies</h4>
+                    <p>Pure vanilla JavaScript — no libraries required.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h4>Three color modes</h4>
+                    <p>Switch between HEX, RGBA, and HSLA input formats.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔮</div>
+                    <h4>Alpha control</h4>
+                    <p>Full transparency support, enable or disable per instance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h4>EyeDropper API</h4>
+                    <p>Pick any color from the screen (Chrome / Edge).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h4>Touch support</h4>
+                    <p>Works on mobile and tablet via Pointer Events API.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔁</div>
+                    <h4>Multiple instances</h4>
+                    <p>Attach a picker to any number of buttons independently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h4>Debounce option</h4>
+                    <p>Built-in change event throttling for expensive handlers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔌</div>
+                    <h4>Programmatic API</h4>
+                    <p>Set color, open/close, enable/disable at runtime.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Usage -->
+        <section id="usage">
+            <div class="section-tag">Getting Started</div>
+            <h2>Basic Usage</h2>
+            <p>Create a button element, attach a picker instance, and listen for color changes:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">HTML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="tag">&lt;button</span> <span class="atr">id</span>=<span class="val">"my-btn"</span><span class="tag">&gt;</span>Pick Color<span class="tag">&lt;/button&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+    <span class="kw">const</span> picker <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>
+        document<span class="pm">.</span><span class="fn">getElementById</span><span class="pm">(</span><span class="str">'my-btn'</span><span class="pm">),</span>
+        <span class="pm">{</span> color<span class="pm">:</span> <span class="str">'#ff0000'</span> <span class="pm">}</span>
+    <span class="pm">);</span>
+
+    picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> <span class="kw">function</span> <span class="pm">(</span>colors<span class="pm">) {</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span>   <span class="cmt">// "#ff0000"</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgba<span class="pm">);</span>  <span class="cmt">// "rgba(255, 0, 0, 1)"</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsla<span class="pm">);</span>  <span class="cmt">// "hsla(0, 100%, 50%, 1)"</span>
+    <span class="pm">});</span>
+<span class="tag">&lt;/script&gt;</span></code></pre>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Options -->
+        <section id="options">
+            <div class="section-tag">API Reference</div>
+            <h2>Options</h2>
+            <p>Pass an options object as the second argument to the constructor:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">const</span> picker <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>element<span class="pm">, {</span>
+    color<span class="pm">:</span>    <span class="str">'#ff0000'</span><span class="pm">,</span>
+    onChange<span class="pm">:</span> colors <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">),</span>
+    alpha<span class="pm">:</span>    <span class="num">true</span><span class="pm">,</span>
+    debounce<span class="pm">:</span> <span class="num">150</span><span class="pm">,</span>
+    disabled<span class="pm">:</span> <span class="num">false</span><span class="pm">,</span>
+<span class="pm">});</span></code></pre>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>color</code></td>
+                            <td><span class="type-badge">string</span></td>
+                            <td><span class="default-badge">'#ff0000'</span></td>
+                            <td>Initial color — accepts HEX, RGB, HSL formats</td>
+                        </tr>
+                        <tr>
+                            <td><code>onChange</code></td>
+                            <td><span class="type-badge">function</span></td>
+                            <td><span class="default-badge">—</span></td>
+                            <td>Shorthand change callback, same as <code>.on('change')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha</code></td>
+                            <td><span class="type-badge">boolean</span></td>
+                            <td><span class="default-badge">true</span></td>
+                            <td>Set to <code>false</code> to disable the alpha slider</td>
+                        </tr>
+                        <tr>
+                            <td><code>debounce</code></td>
+                            <td><span class="type-badge">number</span></td>
+                            <td><span class="default-badge">0</span></td>
+                            <td>ms to debounce the <code>change</code> event during drag (0 = off)</td>
+                        </tr>
+                        <tr>
+                            <td><code>disabled</code></td>
+                            <td><span class="type-badge">boolean</span></td>
+                            <td><span class="default-badge">false</span></td>
+                            <td>Start in disabled state — also reads the element's <code>disabled</code> attribute</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Color Format Examples</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'#ff0000'</span> <span class="pm">});</span>               <span class="cmt">// 6-digit HEX</span>
+<span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'#ff0000ff'</span> <span class="pm">});</span>             <span class="cmt">// 8-digit HEX with alpha</span>
+<span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'#f00'</span> <span class="pm">});</span>                  <span class="cmt">// 3-digit shorthand</span>
+<span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'rgb(255, 0, 0)'</span> <span class="pm">});</span>         <span class="cmt">// RGB</span>
+<span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'rgba(255, 0, 0, 0.5)'</span> <span class="pm">});</span>   <span class="cmt">// RGBA</span>
+<span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'hsl(0, 100%, 50%)'</span> <span class="pm">});</span>      <span class="cmt">// HSL</span>
+<span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>el<span class="pm">, {</span> color<span class="pm">:</span> <span class="str">'hsla(0, 100%, 50%, 1)'</span> <span class="pm">});</span>  <span class="cmt">// HSLA</span></code></pre>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Instance Methods -->
+        <section id="methods">
+            <div class="section-tag">API Reference</div>
+            <h2>Instance Methods</h2>
+
+            <div class="method-list">
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.on(event, callback)</span>
+                        <span class="method-desc">Subscribe to an event</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> <span class="kw">function</span> <span class="pm">(</span>colors<span class="pm">) {</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span>   <span class="cmt">// "#ff0000"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hexa<span class="pm">);</span>  <span class="cmt">// "#ff0000ff"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgb<span class="pm">);</span>   <span class="cmt">// "rgb(255, 0, 0)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgba<span class="pm">);</span>  <span class="cmt">// "rgba(255, 0, 0, 1)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsl<span class="pm">);</span>   <span class="cmt">// "hsl(0, 100%, 50%)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsla<span class="pm">);</span>  <span class="cmt">// "hsla(0, 100%, 50%, 1)"</span>
+<span class="pm">});</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.off(event, callback)</span>
+                        <span class="method-desc">Unsubscribe a specific listener</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code><span class="kw">function</span> <span class="fn">onChange</span><span class="pm">(</span>colors<span class="pm">) {</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">); }</span>
+
+picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> onChange<span class="pm">);</span>
+picker<span class="pm">.</span><span class="fn">off</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> onChange<span class="pm">);</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.setColor(color)</span>
+                        <span class="method-desc">Programmatically set the color — fires the change event</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">setColor</span><span class="pm">(</span><span class="str">'#00ff00'</span><span class="pm">);</span>
+picker<span class="pm">.</span><span class="fn">setColor</span><span class="pm">(</span><span class="str">'rgb(0, 255, 0)'</span><span class="pm">);</span>
+picker<span class="pm">.</span><span class="fn">setColor</span><span class="pm">(</span><span class="str">'hsl(120, 100%, 50%)'</span><span class="pm">);</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.getColor()</span>
+                        <span class="method-desc">Returns the current color as an object with all formats</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code><span class="kw">const</span> colors <span class="pm">=</span> picker<span class="pm">.</span><span class="fn">getColor</span><span class="pm">();</span>
+<span class="cmt">// {</span>
+<span class="cmt">//     hex:  "#ff0000",</span>
+<span class="cmt">//     hexa: "#ff0000ff",</span>
+<span class="cmt">//     rgb:  "rgb(255, 0, 0)",</span>
+<span class="cmt">//     rgba: "rgba(255, 0, 0, 1)",</span>
+<span class="cmt">//     hsl:  "hsl(0, 100%, 50%)",</span>
+<span class="cmt">//     hsla: "hsla(0, 100%, 50%, 1)"</span>
+<span class="cmt">// }</span>
+
+picker<span class="pm">.</span><span class="fn">getColor</span><span class="pm">().</span>hex   <span class="cmt">// "#ff0000"</span>
+picker<span class="pm">.</span><span class="fn">getColor</span><span class="pm">().</span>rgba  <span class="cmt">// "rgba(255, 0, 0, 1)"</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.setAlphaEnabled(boolean)</span>
+                        <span class="method-desc">Show or hide the alpha slider at runtime</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">setAlphaEnabled</span><span class="pm">(</span><span class="num">false</span><span class="pm">);</span>  <span class="cmt">// hide alpha slider</span>
+picker<span class="pm">.</span><span class="fn">setAlphaEnabled</span><span class="pm">(</span><span class="num">true</span><span class="pm">);</span>   <span class="cmt">// show alpha slider</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.open() / .close()</span>
+                        <span class="method-desc">Programmatically open or close the picker</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">open</span><span class="pm">();</span>
+picker<span class="pm">.</span><span class="fn">close</span><span class="pm">();</span>
+
+<span class="cmt">// Check if open</span>
+<span class="kw">if</span> <span class="pm">(</span>picker<span class="pm">.</span>isOpen<span class="pm">) {</span>
+    picker<span class="pm">.</span><span class="fn">close</span><span class="pm">();</span>
+<span class="pm">}</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.enable() / .disable()</span>
+                        <span class="method-desc">Enable or disable the picker</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">disable</span><span class="pm">();</span>  <span class="cmt">// prevents the picker from opening on click</span>
+picker<span class="pm">.</span><span class="fn">enable</span><span class="pm">();</span>   <span class="cmt">// re-enables the picker</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-head">
+                        <span class="method-name">.destroy()</span>
+                        <span class="method-desc">Remove the instance and clean up all event listeners</span>
+                    </div>
+                    <div class="method-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">destroy</span><span class="pm">();</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <h3>All Methods at a Glance</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Returns</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>.on(event, fn)</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Subscribe to an event</td>
+                        </tr>
+                        <tr>
+                            <td><code>.off(event, fn)</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Unsubscribe a listener</td>
+                        </tr>
+                        <tr>
+                            <td><code>.setColor(color)</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Set the color programmatically, fires <code>change</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>.getColor()</code></td>
+                            <td><span class="type-badge">object</span></td>
+                            <td>Returns color object with all formats</td>
+                        </tr>
+                        <tr>
+                            <td><code>.setAlphaEnabled(bool)</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Show or hide the alpha slider at runtime</td>
+                        </tr>
+                        <tr>
+                            <td><code>.open()</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Open the picker (no effect if disabled)</td>
+                        </tr>
+                        <tr>
+                            <td><code>.close()</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Close the picker</td>
+                        </tr>
+                        <tr>
+                            <td><code>.isOpen</code></td>
+                            <td><span class="type-badge">boolean</span></td>
+                            <td>Getter — <code>true</code> if this picker is currently open</td>
+                        </tr>
+                        <tr>
+                            <td><code>.enable()</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Re-enable a disabled picker</td>
+                        </tr>
+                        <tr>
+                            <td><code>.disable()</code></td>
+                            <td><span class="type-badge">this</span></td>
+                            <td>Disable the picker — blocks opening on click</td>
+                        </tr>
+                        <tr>
+                            <td><code>.destroy()</code></td>
+                            <td><span class="type-badge">void</span></td>
+                            <td>Remove instance, clean up all listeners</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Events -->
+        <section id="events">
+            <div class="section-tag">API Reference</div>
+            <h2>Events</h2>
+            <p>Subscribe to events with <code>.on()</code> and unsubscribe with <code>.off()</code>.</p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Callback data</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>change</code></td>
+                            <td><span class="type-badge">colors object</span></td>
+                            <td>Fired every time the color changes</td>
+                        </tr>
+                        <tr>
+                            <td><code>open</code></td>
+                            <td><span class="type-badge">hex string</span></td>
+                            <td>Fired when the picker opens</td>
+                        </tr>
+                        <tr>
+                            <td><code>close</code></td>
+                            <td><span class="type-badge">hex string</span></td>
+                            <td>Fired when the picker closes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="event-list">
+
+                <div class="event-card">
+                    <div class="event-head">
+                        <span class="event-name">change</span>
+                        <span class="method-desc">Fires on every color update — includes all formats</span>
+                    </div>
+                    <div class="event-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> colors <span class="pm">=&gt; {</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span>   <span class="cmt">// "#ff0000"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hexa<span class="pm">);</span>  <span class="cmt">// "#ff0000ff"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgb<span class="pm">);</span>   <span class="cmt">// "rgb(255, 0, 0)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgba<span class="pm">);</span>  <span class="cmt">// "rgba(255, 0, 0, 1)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsl<span class="pm">);</span>   <span class="cmt">// "hsl(0, 100%, 50%)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsla<span class="pm">);</span>  <span class="cmt">// "hsla(0, 100%, 50%, 1)"</span>
+<span class="pm">});</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-head">
+                        <span class="event-name">open</span>
+                        <span class="method-desc">Fires when the picker opens — receives current hex color</span>
+                    </div>
+                    <div class="event-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'open'</span><span class="pm">,</span> hex <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span><span class="str">'Opened with:'</span><span class="pm">,</span> hex<span class="pm">));</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-head">
+                        <span class="event-name">close</span>
+                        <span class="method-desc">Fires when the picker closes — receives final hex color</span>
+                    </div>
+                    <div class="event-body">
+                        <div class="code-block">
+                            <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'close'</span><span class="pm">,</span> hex <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span><span class="str">'Closed with:'</span><span class="pm">,</span> hex<span class="pm">));</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Color Formats -->
+        <section id="color-formats">
+            <div class="section-tag">Reference</div>
+            <h2>Color Formats</h2>
+            <p>The <code>colors</code> object returned by <code>onChange</code> and <code>.getColor()</code>:</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="pm">{</span>
+    hex<span class="pm">:</span>  <span class="str">"#ff0000"</span><span class="pm">,</span>       <span class="cmt">// 6-digit HEX — no alpha</span>
+    hexa<span class="pm">:</span> <span class="str">"#ff0000ff"</span><span class="pm">,</span>     <span class="cmt">// 8-digit HEX — with alpha</span>
+    rgb<span class="pm">:</span>  <span class="str">"rgb(255, 0, 0)"</span><span class="pm">,</span>
+    rgba<span class="pm">:</span> <span class="str">"rgba(255, 0, 0, 1)"</span><span class="pm">,</span>
+    hsl<span class="pm">:</span>  <span class="str">"hsl(0, 100%, 50%)"</span><span class="pm">,</span>
+    hsla<span class="pm">:</span> <span class="str">"hsla(0, 100%, 50%, 1)"</span>
+<span class="pm">}</span></code></pre>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Multiple Instances -->
+        <section id="multiple">
+            <div class="section-tag">Examples</div>
+            <h2>Multiple Instances</h2>
+            <p>Each instance is fully independent — they share one picker UI but each stores its own color state.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">const</span> picker1 <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>document<span class="pm">.</span><span class="fn">getElementById</span><span class="pm">(</span><span class="str">'btn1'</span><span class="pm">), {</span> color<span class="pm">:</span> <span class="str">'#f44336'</span> <span class="pm">});</span>
+<span class="kw">const</span> picker2 <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>document<span class="pm">.</span><span class="fn">getElementById</span><span class="pm">(</span><span class="str">'btn2'</span><span class="pm">), {</span> color<span class="pm">:</span> <span class="str">'#2196f3'</span> <span class="pm">});</span>
+<span class="kw">const</span> picker3 <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>document<span class="pm">.</span><span class="fn">getElementById</span><span class="pm">(</span><span class="str">'btn3'</span><span class="pm">), {</span> color<span class="pm">:</span> <span class="str">'#4caf50'</span><span class="pm">,</span> alpha<span class="pm">:</span> <span class="num">false</span> <span class="pm">});</span>
+
+picker1<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> colors <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span><span class="str">'Picker 1:'</span><span class="pm">,</span> colors<span class="pm">.</span>hex<span class="pm">));</span>
+picker2<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> colors <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span><span class="str">'Picker 2:'</span><span class="pm">,</span> colors<span class="pm">.</span>hex<span class="pm">));</span></code></pre>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Browser Support -->
+        <section id="browser">
+            <div class="section-tag">Reference</div>
+            <h2>Browser Support</h2>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Support</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Color picker UI</td>
+                            <td>All modern browsers</td>
+                        </tr>
+                        <tr>
+                            <td>Touch events</td>
+                            <td>iOS Safari, Android Chrome</td>
+                        </tr>
+                        <tr>
+                            <td>EyeDropper API</td>
+                            <td>Chrome 95+, Edge 95+ (not Firefox / Safari)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <span>© 2025 <a href="https://www.html-code-generator.com/" target="_blank">HTML Code Generator</a></span>
+            <a href="https://github.com/html-code-generator/hcg-color-picker" target="_blank">GitHub</a>
+            <a href="https://www.npmjs.com/package/hcg-color-picker" target="_blank">npm</a>
+            <span style="margin-left:auto;">MIT License</span>
+        </footer>
+
+    </main>
+</div>
+
+<script src="hcg-color.js"></script>
+<script>
+    // -- Live demo pickers -----------------------------------------
+    const p1 = new hcgColor(document.getElementById('demo1'), { color: '#f44336' });
+    const p2 = new hcgColor(document.getElementById('demo2'), { color: '#2196f3' });
+    const p3 = new hcgColor(document.getElementById('demo3'), { color: '#4caf50', alpha: false });
+    const p4 = new hcgColor(document.getElementById('demo4'), { color: '#9c27b0', debounce: 100 });
+
+    // -- Active nav link on scroll ---------------------------------
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                if (active) active.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // -- Copy code buttons -----------------------------------------
+    function copyCode(btn) {
+        const block = btn.closest('.code-block, .install-block');
+        const text  = block.querySelector('code, pre code')?.textContent
+                   ?? block.querySelector('code')?.textContent ?? '';
+
+        navigator.clipboard?.writeText(text.trim()).then(() => {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.textContent = 'Copy';
+                btn.classList.remove('copied');
+            }, 1800);
+        });
+    }
+</script>
+</body>
+</html>
