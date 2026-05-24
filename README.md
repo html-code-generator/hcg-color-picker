@@ -2,15 +2,6 @@
 
 A lightweight, dependency-free color picker widget inspired by Google Chrome's built-in color picker. Supports multiple instances, alpha control, touch input, and the EyeDropper API.
 
-> **Also available as:** [React component](https://github.com/html-code-generator/hcg-color-picker-react) &nbsp;·&nbsp; [npm package](https://www.npmjs.com/package/hcg-color-picker) &nbsp;·&nbsp; [React npm package](https://www.npmjs.com/package/hcg-color-picker-react)
-
----
-
-## Preview
-
-![Color Picker](chrome-style-color-picker.PNG)
-![Color Picker Without Alpha](chrome-style-color-picker-without-alpha.PNG)
-
 ---
 
 ## Features
@@ -34,7 +25,7 @@ A lightweight, dependency-free color picker widget inspired by Google Chrome's b
 
 ## Installation
 
-Include the CSS and script in your HTML file:
+Include the script in your HTML file:
 
 ```html
 <link rel="stylesheet" href="hcg-color.css">
@@ -54,8 +45,9 @@ Include the CSS and script in your HTML file:
         { color: '#ff0000' }
     );
 
-    picker.on('change', function (colors) {
-        console.log(colors.hex);
+    picker.on('change', function (colors, source) {
+        console.log(colors.hex);   // "#ff0000"
+        console.log(source);       // "drag" | "input" | "api" | "eyedropper"
     });
 </script>
 ```
@@ -79,8 +71,10 @@ new hcgColor(element, options)
 
 | Option     | Type       | Default     | Description                                         |
 |------------|------------|-------------|-----------------------------------------------------|
-| `color`    | `string`   | `'#ff0000'` | Initial color — HEX, RGB, HSL formats               |
+| `color`    | `string`   | `data-color` attr or `'#ff0000'` | Initial color — HEX, RGB, HSL formats |
 | `onChange` | `function` | —           | Shorthand change callback (same as `.on('change')`) |
+| `onOpen`   | `function` | —           | Shorthand open callback (same as `.on('open')`)     |
+| `onClose`  | `function` | —           | Shorthand close callback (same as `.on('close')`)   |
 | `alpha`    | `boolean`  | `true`      | Set to `false` to disable alpha control             |
 | `debounce` | `number`   | `0`         | ms to debounce the change event during drag (0 = off) |
 | `disabled` | `boolean`  | `false`     | Start in disabled state — also reads `element.disabled` |
@@ -119,12 +113,13 @@ new hcgColor(el, { color: 'hsla(0, 100%, 50%, 1)' });  // HSLA
 ### `.on(event, callback)`
 Subscribe to an event.
 ```js
-picker.on('change', function (colors) {
+picker.on('change', function (colors, source) {
     console.log(colors.hex);   // "#ff0000"
     console.log(colors.rgb);   // "rgb(255, 0, 0)"
     console.log(colors.rgba);  // "rgba(255, 0, 0, 1)"
     console.log(colors.hsl);   // "hsl(0, 100%, 50%)"
     console.log(colors.hsla);  // "hsla(0, 100%, 50%, 1)"
+    console.log(source);       // "drag" | "input" | "api" | "eyedropper"
 });
 ```
 
@@ -212,11 +207,11 @@ picker.destroy();
 
 ## Events
 
-| Event    | Callback data | Description                        |
-|----------|---------------|------------------------------------|
-| `change` | `colors`      | Fired every time the color changes |
-| `open`   | `hex`         | Fired when the picker opens        |
-| `close`  | `hex`         | Fired when the picker closes       |
+| Event    | Callback args    | Description                        |
+|----------|------------------|------------------------------------|
+| `change` | `colors, source` | Fired every time the color changes |
+| `open`   | `hex`            | Fired when the picker opens        |
+| `close`  | `hex`            | Fired when the picker closes       |
 
 ```js
 picker.on('open',  hex => console.log('opened with:', hex));
@@ -234,6 +229,24 @@ picker.on('close', hex => console.log('closed with:', hex));
     hsl:  "hsl(0, 100%, 50%)",
     hsla: "hsla(0, 100%, 50%, 1)"
 }
+```
+
+### `source` string
+
+The second argument to the `change` callback identifies what triggered the change:
+
+| Value          | Triggered by                              |
+|----------------|-------------------------------------------|
+| `"drag"`       | Dragging the color box, hue, or alpha slider |
+| `"input"`      | Typing into HEX, RGBA, or HSLA inputs     |
+| `"api"`        | Calling `.setColor()` programmatically    |
+| `"eyedropper"` | Picking a color with the EyeDropper API   |
+
+```js
+picker.on('change', (colors, source) => {
+    if (source === 'drag') { /* update live preview only */ }
+    if (source === 'api')  { /* skip — we triggered this */ }
+});
 ```
 
 ---
@@ -258,10 +271,159 @@ picker2.on('change', colors => console.log('Picker 2:', colors.hex));
 The current color is always stored on the trigger element via `data-color`, so you can read it anywhere without keeping a reference to the picker instance:
 
 ```js
+// On form submit, collect all picker colors
 document.querySelectorAll('.color-btn').forEach(btn => {
     console.log(btn.dataset.color); // "#ff0000"
 });
 ```
+
+---
+
+## Usage in React
+
+A dedicated React component is available as a separate package.
+
+### Installation
+
+```bash
+npm install hcg-color-picker-react
+```
+
+### Import
+
+```jsx
+import ColorPicker from 'hcg-color-picker-react';
+import 'hcg-color-picker-react/ColorPicker.css';
+```
+
+> `createPortal` is used internally and imported from `react-dom` — no extra setup needed.
+
+---
+
+### Props
+
+| Prop        | Type       | Default     | Description                                       |
+|-------------|------------|-------------|---------------------------------------------------|
+| `color`     | `string`   | `'#ff0000'` | Initial color — HEX, RGB, HSL formats             |
+| `onChange`  | `function` | —           | Called with `(colors, source)` every time the color changes |
+| `onOpen`    | `function` | —           | Called with the current hex when the picker opens |
+| `onClose`   | `function` | —           | Called with the final hex when the picker closes  |
+| `alpha`     | `boolean`  | `true`      | Set to `false` to disable alpha control           |
+| `debounce`  | `number`   | `0`         | ms to debounce the change event (0 = off)         |
+| `disabled`  | `boolean`  | `false`     | Prevents the picker from opening                  |
+| `className` | `string`   | —           | CSS class applied to the trigger button           |
+| `style`     | `object`   | —           | Inline styles for the trigger button              |
+
+---
+
+### Basic usage
+
+```jsx
+import ColorPicker from 'hcg-color-picker-react';
+import 'hcg-color-picker-react/ColorPicker.css';
+
+function App() {
+    function handleChange(colors, source) {
+        console.log(colors.hex);   // "#ff0000"
+        console.log(colors.rgba);  // "rgba(255, 0, 0, 1)"
+        console.log(colors.hsla);  // "hsla(0, 100%, 50%, 1)"
+        console.log(source);       // "drag" | "input" | "api" | "eyedropper"
+    }
+
+    return (
+        <div>
+            {/* Basic */}
+            <ColorPicker color="#ff0000" onChange={handleChange} />
+
+            {/* No alpha */}
+            <ColorPicker color="#0000ff" alpha={false} onChange={handleChange} />
+
+            {/* Debounced — change fires 200ms after the user stops dragging */}
+            <ColorPicker color="#9c27b0" debounce={200} onChange={handleChange} />
+
+            {/* Disabled */}
+            <ColorPicker color="#00ff00" disabled={true} />
+        </div>
+    );
+}
+
+export default App;
+```
+
+---
+
+### Programmatic API via `ref`
+
+Use `ref` to call methods directly from a parent component:
+
+```jsx
+import { useRef } from 'react';
+import ColorPicker from 'hcg-color-picker-react';
+import 'hcg-color-picker-react/ColorPicker.css';
+
+function App() {
+    const pickerRef = useRef(null);
+
+    return (
+        <div>
+            <ColorPicker
+                ref={pickerRef}
+                color="#ff9800"
+                onChange={colors => console.log(colors.hex)}
+            />
+
+            <button onClick={() => pickerRef.current.setColor('#e91e63')}>Set Pink</button>
+            <button onClick={() => alert(pickerRef.current.getColor().hex)}>Get Color</button>
+            <button onClick={() => pickerRef.current.open()}>Open</button>
+            <button onClick={() => pickerRef.current.close()}>Close</button>
+            <button onClick={() => pickerRef.current.setAlphaEnabled(false)}>Disable Alpha</button>
+        </div>
+    );
+}
+
+export default App;
+```
+
+### Ref methods
+
+| Method                   | Description                              |
+|--------------------------|------------------------------------------|
+| `.setColor(color)`       | Programmatically set the color           |
+| `.getColor()`            | Returns current color as an object       |
+| `.setAlphaEnabled(bool)` | Show or hide the alpha slider at runtime |
+| `.open()`                | Programmatically open the picker         |
+| `.close()`               | Programmatically close the picker        |
+| `.enable()`              | Enable the picker                        |
+| `.disable()`             | Disable the picker                       |
+
+---
+
+### Multiple instances
+
+Each `<ColorPicker>` is a fully independent instance — no shared state between them:
+
+```jsx
+function App() {
+    return (
+        <div>
+            <ColorPicker color="#f44336" onChange={c => console.log('Red picker:', c.hex)} />
+            <ColorPicker color="#4caf50" onChange={c => console.log('Green picker:', c.hex)} />
+            <ColorPicker color="#2196f3" alpha={false} onChange={c => console.log('Blue picker:', c.hex)} />
+        </div>
+    );
+}
+```
+
+---
+
+### React — Key notes
+
+| | Reason |
+|---|---|
+| `forwardRef` | Allows parent components to access ref methods |
+| `useImperativeHandle` | Exposes `setColor`, `getColor` etc. via ref |
+| `createPortal` (from `react-dom`) | Renders picker popup at `document.body` level to avoid overflow/z-index issues |
+| Unique SVG IDs per instance | Each picker generates unique gradient IDs — no conflicts with multiple instances |
 
 ---
 
@@ -272,12 +434,6 @@ document.querySelectorAll('.color-btn').forEach(btn => {
 | Color picker UI | All modern browsers                       |
 | Touch events    | iOS Safari, Android Chrome               |
 | EyeDropper API  | Chrome 95+, Edge 95+ (not Firefox/Safari) |
-
----
-
-## React Version
-
-Looking for a React component? See [hcg-color-picker-react](https://github.com/html-code-generator/hcg-color-picker-react).
 
 ---
 

@@ -11,128 +11,7 @@
     'use strict';
 
     // -- HTML template ----------------------------------------------
-    const template = `
-        <svg id="hcg_color_box" width="230" height="130">
-            <defs>
-                <linearGradient id="hcg_saturation" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#fff"></stop>
-                    <stop id="hcg_saturation_stop" offset="100%" stop-color="hsl(0,100%,50%)"></stop>
-                </linearGradient>
-                <linearGradient id="hcg_brightness" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="rgba(0,0,0,0)"></stop>
-                    <stop offset="100%" stop-color="#000"></stop>
-                </linearGradient>
-                <pattern id="hcg_pattern" width="100%" height="100%">
-                    <rect x="0" y="0" width="100%" height="100%" fill="url(#hcg_saturation)"></rect>
-                    <rect x="0" y="0" width="100%" height="100%" fill="url(#hcg_brightness)"></rect>
-                </pattern>
-            </defs>
-            <rect width="230" height="130" stroke="#fff" fill="url(#hcg_pattern)" cursor="crosshair"></rect>
-            <g id="hcg_box_dragger" style="transform: translate3d(219px, 14px, 0);">
-                <circle r="9" fill="none" stroke="#000" stroke-width="2"></circle>
-                <circle r="7" fill="none" stroke="#fff" stroke-width="2"></circle>
-            </g>
-        </svg>
-        <br>
-        <div class="hcg_slider_container">
-        <div class="hcg_eye_dropper">
-            <button id="hcg_eye_dropper_btn" style="display:none;" title="Eye dropper [C]"><svg width="22" height="22" fill="#333"><path d="m20.71 5.63-2.34-2.34a.996.996 0 0 0-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42M6.92 19 5 17.08l8.06-8.06 1.92 1.92z"/></svg></button>
-            <div class="hcg_preview_wrap">
-                <svg width="35" height="35">
-                    <rect rx="33" ry="33" x="1" y="1" width="33" height="33" fill="url(#hcg_checkerboard)"></rect>
-                    <rect rx="33" ry="33" x="1" y="1" width="33" height="33" id="hcg_color_preview" stroke="#ddd" stroke-width="1"></rect>
-                </svg>
-                <button id="hcg_copy_btn" title="Copy color"><svg width="14" height="14" fill="#fff" viewBox="0 0 24 24"><path d="M16 1H4C3 1 2 2 2 3v14h2V3h12V1zm3 4H8C7 5 6 6 6 7v14c0 1 1 2 2 2h11c1 0 2-1 2-2V7c0-1-1-2-2-2zm0 16H8V7h11v14z"/></svg></button>
-            </div>
-        </div>
-        <div id="hcg_color_sliders">
-
-            <svg id="hcg_hue_slider" width="148" height="22">
-                <defs>
-                    <filter id="hcg_rect_shadow" x="-10%" y="-20%" width="120%" height="140%">
-                        <feDropShadow dx="0" dy="0" stdDeviation=".5" flood-color="rgba(0,0,0,0.9)"></feDropShadow>
-                    </filter>
-                    <linearGradient id="hcg_hue" x1="100%" y1="0%" x2="0%" y2="0%">
-                        <stop offset="0%"      stop-color="#f00"></stop>
-                        <stop offset="16.666%" stop-color="#ff0"></stop>
-                        <stop offset="33.333%" stop-color="#0f0"></stop>
-                        <stop offset="50%"     stop-color="#0ff"></stop>
-                        <stop offset="66.666%" stop-color="#00f"></stop>
-                        <stop offset="83.333%" stop-color="#f0f"></stop>
-                        <stop offset="100%"    stop-color="#f00"></stop>
-                    </linearGradient>
-                </defs>
-                <g transform="translate(9, 4.5)">
-                    <rect rx="2" ry="2" width="130" height="13" fill="url(#hcg_hue)" cursor="crosshair"></rect>
-                    <g id="hcg_hue_dragger" style="transform: translate3d(130px, 6.5px, 0);">
-                        <circle r="7.5" fill="none" stroke="#fff" stroke-width="2" filter="url(#hcg_rect_shadow)"></circle>
-                    </g>
-                </g>
-            </svg>
-            <svg id="hcg_alpha_slider" class="hcg_alpha_control" width="148" height="22">
-                <defs>
-                    <pattern id="hcg_checkerboard" width="13" height="13" patternUnits="userSpaceOnUse">
-                        <rect width="13" height="13" fill="#fff"></rect>
-                        <rect width="6.5" height="6.5" fill="#d7d7d7"></rect>
-                        <rect x="6.5" y="6.5" width="6.5" height="6.5" fill="#d7d7d7"></rect>
-                    </pattern>
-                    <linearGradient id="hcg_opacity" x1="100%" y1="0%" x2="0%" y2="0%">
-                        <stop id="hcg_opacity_stop" offset="0%" stop-color="#000"></stop>
-                        <stop offset="100%" stop-color="transparent"></stop>
-                    </linearGradient>
-                </defs>
-                <g transform="translate(9, 4.5)">
-                    <rect rx="2" ry="2" x="0" y="0" width="130" height="13" fill="url(#hcg_checkerboard)"></rect>
-                    <rect rx="2" ry="2" x="0" y="0" width="130" height="13" fill="url(#hcg_opacity)" cursor="crosshair"></rect>
-                    <g id="hcg_alpha_dragger" style="transform: translate3d(130px, 6.5px, 0);">
-                        <circle r="7.5" fill="none" stroke="#fff" stroke-width="2" filter="url(#hcg_rect_shadow)"></circle>
-                    </g>
-                </g>
-            </svg>
-        </div>
-        </div>
-
-        <div id="hcg_color_values" tabindex="0">
-            <div class="hcg_color_input">
-                <div id="hcg_hexa_row">
-                    <div class="hcg_color_col">
-                        <label><input id="hcg_hex_input" type="text" maxlength="9" spellcheck="false" value="#ff0000" aria-label="Hex color value">HEX</label>
-                    </div>
-                </div>
-                <div id="hcg_rgba_row" style="display:none;">
-                    <div class="hcg_color_col">
-                        <label><input class="hcg_rgba_input" type="number" min="0" max="255" aria-label="Red">R</label>
-                    </div>
-                    <div class="hcg_color_col">
-                        <label><input class="hcg_rgba_input" type="number" min="0" max="255" aria-label="Green">G</label>
-                    </div>
-                    <div class="hcg_color_col">
-                        <label><input class="hcg_rgba_input" type="number" min="0" max="255" aria-label="Blue">B</label>
-                    </div>
-                    <div class="hcg_color_col hcg_alpha_control">
-                        <label><input class="hcg_rgba_input hcg_alpha_input" type="number" step="0.01" min="0" max="1" aria-label="Alpha">A</label>
-                    </div>
-                </div>
-                <div id="hcg_hsla_row" style="display:none;">
-                    <div class="hcg_color_col">
-                        <label><input class="hcg_hsla_input" type="number" min="0" max="360" aria-label="Hue">H</label>
-                    </div>
-                    <div class="hcg_color_col">
-                        <label><input class="hcg_hsla_input" type="number" min="0" max="100" aria-label="Saturation">S%</label>
-                    </div>
-                    <div class="hcg_color_col">
-                        <label><input class="hcg_hsla_input" type="number" min="0" max="100" aria-label="Lightness">L%</label>
-                    </div>
-                    <div class="hcg_color_col hcg_alpha_control">
-                        <label><input class="hcg_hsla_input hcg_alpha_input" type="number" step="0.01" min="0" max="1" aria-label="Alpha">A</label>
-                    </div>
-                </div>
-            </div>
-            <button id="hcg_switch_color_type" title="change color format">
-                <svg width="25" height="25" fill="none" stroke="#9b9b9b" stroke-width="2"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></svg>
-            </button>
-        </div>
-    `;
+    const template = '<svg id="hcg_color_box" width="230" height="130"><defs><linearGradient id="hcg_saturation" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#fff"></stop><stop id="hcg_saturation_stop" offset="100%" stop-color="hsl(0,100%,50%)"></stop></linearGradient><linearGradient id="hcg_brightness" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="rgba(0,0,0,0)"></stop><stop offset="100%" stop-color="#000"></stop></linearGradient><pattern id="hcg_pattern" width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" fill="url(#hcg_saturation)"></rect><rect x="0" y="0" width="100%" height="100%" fill="url(#hcg_brightness)"></rect></pattern></defs><rect width="230" height="130" stroke="#fff" fill="url(#hcg_pattern)" cursor="crosshair"></rect><g id="hcg_box_dragger" style="transform: translate3d(219px, 14px, 0);"><circle r="9" fill="none" stroke="#000" stroke-width="2"></circle><circle r="7" fill="none" stroke="#fff" stroke-width="2"></circle></g></svg><br><div class="hcg_slider_container"><div class="hcg_eye_dropper"><button id="hcg_eye_dropper_btn" style="display:none;" title="Eye dropper"><svg width="22" height="22" fill="#333"><path d="m20.71 5.63-2.34-2.34a.996.996 0 0 0-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.12-3.12c.4-.4.4-1.03.01-1.42M6.92 19 5 17.08l8.06-8.06 1.92 1.92z"/></svg></button><div class="hcg_preview_wrap"><svg width="35" height="35"><rect rx="33" ry="33" x="1" y="1" width="33" height="33" fill="url(#hcg_checkerboard)"></rect><rect rx="33" ry="33" x="1" y="1" width="33" height="33" id="hcg_color_preview" stroke="#ddd" stroke-width="1"></rect></svg><button id="hcg_copy_btn" title="Copy color"><svg width="14" height="14" fill="#fff" viewBox="0 0 24 24"><path d="M16 1H4C3 1 2 2 2 3v14h2V3h12V1zm3 4H8C7 5 6 6 6 7v14c0 1 1 2 2 2h11c1 0 2-1 2-2V7c0-1-1-2-2-2zm0 16H8V7h11v14z"/></svg></button></div></div><div id="hcg_color_sliders"><svg id="hcg_hue_slider" width="148" height="22"><defs><filter id="hcg_rect_shadow" x="-10%" y="-20%" width="120%" height="140%"><feDropShadow dx="0" dy="0" stdDeviation=".5" flood-color="rgba(0,0,0,0.9)"></feDropShadow></filter><linearGradient id="hcg_hue" x1="100%" y1="0%" x2="0%" y2="0%"><stop offset="0%" stop-color="#f00"></stop><stop offset="16.666%" stop-color="#ff0"></stop><stop offset="33.333%" stop-color="#0f0"></stop><stop offset="50%" stop-color="#0ff"></stop><stop offset="66.666%" stop-color="#00f"></stop><stop offset="83.333%" stop-color="#f0f"></stop><stop offset="100%" stop-color="#f00"></stop></linearGradient></defs><g transform="translate(9, 4.5)"><rect rx="2" ry="2" width="130" height="13" fill="url(#hcg_hue)" cursor="crosshair"></rect><g id="hcg_hue_dragger" style="transform: translate3d(130px, 6.5px, 0);"><circle r="7.5" fill="none" stroke="#fff" stroke-width="2" filter="url(#hcg_rect_shadow)"></circle></g></g></svg><svg id="hcg_alpha_slider" class="hcg_alpha_control" width="148" height="22"><defs><pattern id="hcg_checkerboard" width="13" height="13" patternUnits="userSpaceOnUse"><rect width="13" height="13" fill="#fff"></rect><rect width="6.5" height="6.5" fill="#d7d7d7"></rect><rect x="6.5" y="6.5" width="6.5" height="6.5" fill="#d7d7d7"></rect></pattern><linearGradient id="hcg_opacity" x1="100%" y1="0%" x2="0%" y2="0%"><stop id="hcg_opacity_stop" offset="0%" stop-color="#000"></stop><stop offset="100%" stop-color="transparent"></stop></linearGradient></defs><g transform="translate(9, 4.5)"><rect rx="2" ry="2" x="0" y="0" width="130" height="13" fill="url(#hcg_checkerboard)"></rect><rect rx="2" ry="2" x="0" y="0" width="130" height="13" fill="url(#hcg_opacity)" cursor="crosshair"></rect><g id="hcg_alpha_dragger" style="transform: translate3d(130px, 6.5px, 0);"><circle r="7.5" fill="none" stroke="#fff" stroke-width="2" filter="url(#hcg_rect_shadow)"></circle></g></g></svg></div></div><div id="hcg_color_values" tabindex="0"><div class="hcg_color_input"><div id="hcg_hexa_row"><div class="hcg_color_col"><label><input id="hcg_hex_input" type="text" maxlength="9" spellcheck="false" value="#ff0000" aria-label="Hex color value">HEX</label></div></div><div id="hcg_rgba_row" style="display:none;"><div class="hcg_color_col"><label><input class="hcg_rgba_input" name="hcg_r" type="number" min="0" max="255" aria-label="Red">R</label></div><div class="hcg_color_col"><label><input class="hcg_rgba_input" name="hcg_g" type="number" min="0" max="255" aria-label="Green">G</label></div><div class="hcg_color_col"><label><input class="hcg_rgba_input" name="hcg_b" type="number" min="0" max="255" aria-label="Blue">B</label></div><div class="hcg_color_col hcg_alpha_control"><label><input class="hcg_rgba_input hcg_alpha_input" name="hcg_a" type="number" step="0.01" min="0" max="1" aria-label="Alpha">A</label></div></div><div id="hcg_hsla_row" style="display:none;"><div class="hcg_color_col"><label><input class="hcg_hsla_input" name="hcg_h" type="number" min="0" max="360" aria-label="Hue">H</label></div><div class="hcg_color_col"><label><input class="hcg_hsla_input" name="hcg_s" type="number" min="0" max="100" aria-label="Saturation">S%</label></div><div class="hcg_color_col"><label><input class="hcg_hsla_input" name="hcg_l" type="number" min="0" max="100" aria-label="Lightness">L%</label></div><div class="hcg_color_col hcg_alpha_control"><label><input class="hcg_hsla_input hcg_alpha_input" name="hcg_a_hsla" type="number" step="0.01" min="0" max="1" aria-label="Alpha">A</label></div></div></div><button id="hcg_switch_color_type" title="change color format"><svg width="25" height="25" fill="none" stroke="#9b9b9b" stroke-width="2"><path d="m7 15 5 5 5-5M7 9l5-5 5 5"/></svg></button></div>';
 
     // -- DOM elements (populated on first use) ----------------------
     const els = {
@@ -333,15 +212,13 @@
                 els.hexInput.value = HSLAToRGBA(h, s, l, a, true);
         } else if (state.colorMode === 'RGBA') {
             const rgba = HSLAToRGBA(h, s, l, a);
-            if (els.rgbaInputs[0] !== skip) els.rgbaInputs[0].value = rgba.r;
-            if (els.rgbaInputs[1] !== skip) els.rgbaInputs[1].value = rgba.g;
-            if (els.rgbaInputs[2] !== skip) els.rgbaInputs[2].value = rgba.b;
-            if (els.rgbaInputs[3] !== skip) els.rgbaInputs[3].value = rgba.a;
+            [rgba.r, rgba.g, rgba.b, rgba.a].forEach((v, i) => {
+                if (els.rgbaInputs[i] !== skip) els.rgbaInputs[i].value = v;
+            });
         } else {
-            if (els.hslaInputs[0] !== skip) els.hslaInputs[0].value = h;
-            if (els.hslaInputs[1] !== skip) els.hslaInputs[1].value = Math.round(s);
-            if (els.hslaInputs[2] !== skip) els.hslaInputs[2].value = Math.round(l);
-            if (els.hslaInputs[3] !== skip) els.hslaInputs[3].value = a;
+            [h, Math.round(s), Math.round(l), a].forEach((v, i) => {
+                if (els.hslaInputs[i] !== skip) els.hslaInputs[i].value = v;
+            });
         }
     }
 
@@ -357,14 +234,16 @@
         const inst = state.instance;
         if (inst._debounce > 0) {
             inst._pendingColors = colors;
+            inst._pendingSource = colorSource;
             clearTimeout(inst._debounceTimer);
             inst._debounceTimer = setTimeout(() => {
                 inst._debounceTimer = null;
-                inst._emit('change', inst._pendingColors);
+                inst._emit('change', inst._pendingColors, inst._pendingSource);
                 inst._pendingColors = null;
+                inst._pendingSource = null;
             }, inst._debounce);
         } else {
-            inst._emit('change', colors);
+            inst._emit('change', colors, colorSource);
         }
     }
 
@@ -381,7 +260,8 @@
     }
 
     // -- RAF drag throttle ------------------------------------------
-    let rafId = null;
+    let rafId       = null;
+    let colorSource = 'drag';   // tracks the origin of the current color change
 
     const queueUpdate = () => {
         if (rafId) return;
@@ -487,8 +367,9 @@
             if (closing._debounceTimer) {   // flush any pending debounced change immediately
                 clearTimeout(closing._debounceTimer);
                 closing._debounceTimer = null;
-                closing._emit('change', closing._pendingColors);
+                closing._emit('change', closing._pendingColors, closing._pendingSource);
                 closing._pendingColors = null;
+                closing._pendingSource = null;
             }
         }
         if (closing) closing._emit('close', closing.lastChange);
@@ -552,6 +433,7 @@
             state.currentPointerId = e.pointerId;
             activeRect = el.getBoundingClientRect();
             state.activeDrag = type;
+            colorSource = 'drag';
             handler(e.clientX, e.clientY);
         });
         on(el, 'pointermove', e => {
@@ -622,6 +504,7 @@
         // -- Hex input ----------------------------------------------
         on(els.hexInput, 'input', function () {
             if (HEX_RE.test(this.value)) {
+                colorSource = 'input';
                 updateDisplays(parseColor(this.value));
                 applyColor();
             }
@@ -637,6 +520,7 @@
                 state.hue = +p.h; state.saturation = +p.s; state.lightness = +p.l; state.alpha = +p.a;
                 setHueGradient(state.hue);
                 updateDraggers();
+                colorSource = 'input';
                 queueUpdate();
             });
         });
@@ -650,6 +534,7 @@
                 state.hue = h; state.saturation = s; state.lightness = l; state.alpha = a;
                 setHueGradient(state.hue);
                 updateDraggers();
+                colorSource = 'input';
                 queueUpdate();
             });
         });
@@ -660,6 +545,7 @@
             on(els.eyeDropperBtn, 'click', async () => {
                 try {
                     const result = await new EyeDropper().open();
+                    colorSource = 'eyedropper';
                     updateDisplays(parseColor(result.sRGBHex));
                     applyColor();
                 } catch (_) { }
@@ -714,6 +600,8 @@
      * @param {boolean}     [opts.alpha=true]       - Enable alpha channel
      * @param {number}      [opts.debounce=0]       - ms to debounce the change event (0 = off)
      * @param {boolean}     [opts.disabled=false]   - Start in disabled state (also reads the element's disabled attribute)
+     * @param {Function}    [opts.onOpen]           - Shorthand open callback (same as .on('open'))
+     * @param {Function}    [opts.onClose]          - Shorthand close callback (same as .on('close'))
      *
      * @example
      * const picker = new hcgColor(btn, { color: '#ff0000', debounce: 150 });
@@ -729,8 +617,11 @@
         this._debounce      = (typeof opts.debounce === 'number' && opts.debounce > 0) ? opts.debounce : 0;
         this._debounceTimer = null;
         this._pendingColors = null;
+        this._pendingSource = null;
 
-        const initColor      = isValidColorString(opts.color) ? opts.color : '#ff0000';
+        const initColor      = isValidColorString(opts.color) ? opts.color
+                             : isValidColorString(element.dataset.color) ? element.dataset.color
+                             : '#ff0000';
         const positions      = calcPositionsFromColor(initColor);
         const { h: ph, s: ps, l: pl, a: pa } = positions.parsed;
         const rgba           = HSLAToRGBA(ph, ps, pl, pa);
@@ -754,6 +645,8 @@
             openPicker(this);
         };
         if (typeof opts.onChange === 'function') this.on('change', opts.onChange);
+        if (typeof opts.onOpen   === 'function') this.on('open',   opts.onOpen);
+        if (typeof opts.onClose  === 'function') this.on('close',  opts.onClose);
         if (this._disabled) {
             element.setAttribute('disabled', '');
         } else {
@@ -775,8 +668,8 @@
         return this;
     };
 
-    hcgColor.prototype._emit = function (event, data) {
-        (this._listeners[event] || []).forEach(fn => fn(data));
+    hcgColor.prototype._emit = function (event, data, extra) {
+        (this._listeners[event] || []).forEach(fn => fn(data, extra));
     };
 
     // -- Public instance methods ------------------------------------
@@ -814,7 +707,7 @@
             updateDisplays(parsed);
             els.colorPreview.setAttribute('fill', hexa);
         }
-        this._emit('change', buildColorSet(parsed.h, parsed.s, parsed.l, parsed.a));
+        this._emit('change', buildColorSet(parsed.h, parsed.s, parsed.l, parsed.a), 'api');
         return this;
     };
 
@@ -828,24 +721,20 @@
         if (!this._alphaEnabled) {
             this.alpha         = 1;
             this.alphaPosition = 130;
-            const parsed = parseColor(this.element.dataset.color);
+            const parsed = parseColor(this.lastChange);
             parsed.a = 1;
             const rgba = HSLAToRGBA(parsed.h, parsed.s, parsed.l, 1);
             const hex  = RGBAToHexA(rgba.r, rgba.g, rgba.b, 1);
             this.element.dataset.color    = hex;
             this.element.style.background = hex;
             this.lastChange = hex;
-        }
-        if (state.instance === this) {
-            setAlphaControlsVisible(this._alphaEnabled);
-            if (!this._alphaEnabled) {
+            if (state.instance === this) {
                 state.alpha = 1;
-                const parsed = parseColor(this.lastChange);
-                parsed.a = 1;
                 updateDisplays(parsed);
                 els.colorPreview.setAttribute('fill', this.lastChange);
             }
         }
+        if (state.instance === this) setAlphaControlsVisible(this._alphaEnabled);
         return this;
     };
 
@@ -877,6 +766,7 @@
             this._debounceTimer = null;
         }
         this._pendingColors = null;
+        this._pendingSource = null;
         this.lastChange    = null;
         this.colorPosition = null;
         this.huePosition   = null;

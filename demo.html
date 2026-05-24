@@ -529,8 +529,10 @@
 
         <div class="nav-group">
             <span class="nav-label">More</span>
+            <a class="nav-link" href="#debounce">Debounce</a>
             <a class="nav-link" href="#color-formats">Color Formats</a>
             <a class="nav-link" href="#multiple">Multiple Instances</a>
+            <a class="nav-link" href="#react">React Package</a>
             <a class="nav-link" href="#browser">Browser Support</a>
         </div>
     </nav>
@@ -595,6 +597,38 @@
                 <pre><code><span class="kw">import</span> hcgColor <span class="kw">from</span> <span class="str">'hcg-color-picker'</span><span class="pm">;</span>
 <span class="kw">import</span> <span class="str">'hcg-color-picker/hcg-color.css'</span><span class="pm">;</span></code></pre>
             </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS — CJS</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">const</span> hcgColor <span class="pm">=</span> <span class="fn">require</span><span class="pm">(</span><span class="str">'hcg-color-picker'</span><span class="pm">);</span></code></pre>
+            </div>
+
+            <h3>CDN</h3>
+            <p>Include directly from a CDN — no build step required. Ideal for static pages and quick prototypes.</p>
+
+            <p>jsDelivr:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">HTML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.0/hcg-color.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.0/index.umd.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+            </div>
+
+            <p>unpkg:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">HTML</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"https://unpkg.com/hcg-color-picker@2.0.0/hcg-color.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://unpkg.com/hcg-color-picker@2.0.0/index.umd.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+            </div>
+            <p>After the script loads, <code>hcgColor</code> is available as a global variable.</p>
         </section>
 
         <hr class="divider">
@@ -694,6 +728,8 @@
                 <pre><code><span class="kw">const</span> picker <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>element<span class="pm">, {</span>
     color<span class="pm">:</span>    <span class="str">'#ff0000'</span><span class="pm">,</span>
     onChange<span class="pm">:</span> colors <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">),</span>
+    onOpen<span class="pm">:</span>   hex <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span><span class="str">'opened'</span><span class="pm">,</span> hex<span class="pm">),</span>
+    onClose<span class="pm">:</span>  hex <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span><span class="str">'closed'</span><span class="pm">,</span> hex<span class="pm">),</span>
     alpha<span class="pm">:</span>    <span class="num">true</span><span class="pm">,</span>
     debounce<span class="pm">:</span> <span class="num">150</span><span class="pm">,</span>
     disabled<span class="pm">:</span> <span class="num">false</span><span class="pm">,</span>
@@ -714,14 +750,26 @@
                         <tr>
                             <td><code>color</code></td>
                             <td><span class="type-badge">string</span></td>
-                            <td><span class="default-badge">'#ff0000'</span></td>
-                            <td>Initial color — accepts HEX, RGB, HSL formats</td>
+                            <td><span class="default-badge">data-color or '#ff0000'</span></td>
+                            <td>Initial color — accepts HEX, RGB, HSL. Falls back to the element's <code>data-color</code> attribute if not set</td>
                         </tr>
                         <tr>
                             <td><code>onChange</code></td>
                             <td><span class="type-badge">function</span></td>
                             <td><span class="default-badge">—</span></td>
                             <td>Shorthand change callback, same as <code>.on('change')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>onOpen</code></td>
+                            <td><span class="type-badge">function</span></td>
+                            <td><span class="default-badge">—</span></td>
+                            <td>Shorthand open callback, same as <code>.on('open')</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>onClose</code></td>
+                            <td><span class="type-badge">function</span></td>
+                            <td><span class="default-badge">—</span></td>
+                            <td>Shorthand close callback, same as <code>.on('close')</code></td>
                         </tr>
                         <tr>
                             <td><code>alpha</code></td>
@@ -763,6 +811,54 @@
 
         <hr class="divider">
 
+        <!-- Debounce -->
+        <section id="debounce">
+            <div class="section-tag">Examples</div>
+            <h2>Debounce</h2>
+            <p>By default the <code>change</code> event fires on every pointer move during drag — up to 60 times per second. The <code>debounce</code> option delays the event until the user pauses or stops dragging, useful for expensive operations like API calls or database saves.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JS</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">const</span> picker <span class="pm">=</span> <span class="kw">new</span> <span class="cls">hcgColor</span><span class="pm">(</span>btn<span class="pm">, {</span>
+    color<span class="pm">:</span>    <span class="str">'#ff0000'</span><span class="pm">,</span>
+    debounce<span class="pm">:</span> <span class="num">200</span><span class="pm">,</span>
+    onChange<span class="pm">:</span> <span class="pm">(</span>colors<span class="pm">) =&gt; {</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span> <span class="cmt">// fires 200ms after drag stops</span>
+    <span class="pm">}</span>
+<span class="pm">});</span></code></pre>
+            </div>
+
+            <p>Live comparison — drag the sliders and watch the counters:</p>
+
+            <div style="display:flex; gap:24px; flex-wrap:wrap; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin:16px 0;">
+                <div style="flex:1; min-width:200px;">
+                    <p style="font-size:13px; margin-bottom:12px;">No debounce <code>debounce: 0</code></p>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button class="color-btn" id="dbd1" style="background:#e91e63;"></button>
+                        <div>
+                            <div style="font-family:monospace; font-size:13px; color:var(--text);" id="dbd1-color">#e91e63</div>
+                            <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">onChange fired: <strong id="dbd1-count" style="color:var(--accent);">0</strong> times</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:200px;">
+                    <p style="font-size:13px; margin-bottom:12px;">With debounce <code>debounce: 200</code></p>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <button class="color-btn" id="dbd2" style="background:#2196f3;"></button>
+                        <div>
+                            <div style="font-family:monospace; font-size:13px; color:var(--text);" id="dbd2-color">#2196f3</div>
+                            <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">onChange fired: <strong id="dbd2-count" style="color:var(--accent);">0</strong> times</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
         <!-- Instance Methods -->
         <section id="methods">
             <div class="section-tag">API Reference</div>
@@ -778,13 +874,14 @@
                     <div class="method-body">
                         <div class="code-block">
                             <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> <span class="kw">function</span> <span class="pm">(</span>colors<span class="pm">) {</span>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> <span class="kw">function</span> <span class="pm">(</span>colors<span class="pm">,</span> source<span class="pm">) {</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span>   <span class="cmt">// "#ff0000"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hexa<span class="pm">);</span>  <span class="cmt">// "#ff0000ff"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgb<span class="pm">);</span>   <span class="cmt">// "rgb(255, 0, 0)"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgba<span class="pm">);</span>  <span class="cmt">// "rgba(255, 0, 0, 1)"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsl<span class="pm">);</span>   <span class="cmt">// "hsl(0, 100%, 50%)"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsla<span class="pm">);</span>  <span class="cmt">// "hsla(0, 100%, 50%, 1)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>source<span class="pm">);</span>       <span class="cmt">// "drag" | "input" | "api" | "eyedropper"</span>
 <span class="pm">});</span></code></pre>
                         </div>
                     </div>
@@ -998,7 +1095,7 @@ picker<span class="pm">.</span><span class="fn">enable</span><span class="pm">()
                     <tbody>
                         <tr>
                             <td><code>change</code></td>
-                            <td><span class="type-badge">colors object</span></td>
+                            <td><span class="type-badge">colors, source</span></td>
                             <td>Fired every time the color changes</td>
                         </tr>
                         <tr>
@@ -1025,13 +1122,14 @@ picker<span class="pm">.</span><span class="fn">enable</span><span class="pm">()
                     <div class="event-body">
                         <div class="code-block">
                             <div class="code-header"><span class="code-lang">JS</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> colors <span class="pm">=&gt; {</span>
+                            <pre><code>picker<span class="pm">.</span><span class="fn">on</span><span class="pm">(</span><span class="str">'change'</span><span class="pm">,</span> <span class="pm">(</span>colors<span class="pm">,</span> source<span class="pm">) =&gt; {</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span>   <span class="cmt">// "#ff0000"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hexa<span class="pm">);</span>  <span class="cmt">// "#ff0000ff"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgb<span class="pm">);</span>   <span class="cmt">// "rgb(255, 0, 0)"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgba<span class="pm">);</span>  <span class="cmt">// "rgba(255, 0, 0, 1)"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsl<span class="pm">);</span>   <span class="cmt">// "hsl(0, 100%, 50%)"</span>
     console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hsla<span class="pm">);</span>  <span class="cmt">// "hsla(0, 100%, 50%, 1)"</span>
+    console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>source<span class="pm">);</span>       <span class="cmt">// "drag" | "input" | "api" | "eyedropper"</span>
 <span class="pm">});</span></code></pre>
                         </div>
                     </div>
@@ -1114,6 +1212,149 @@ picker2<span class="pm">.</span><span class="fn">on</span><span class="pm">(</sp
 
         <hr class="divider">
 
+        <!-- React Package -->
+        <section id="react">
+            <div class="section-tag">Framework</div>
+            <h2>React Package</h2>
+            <p>A dedicated React component is available as a separate npm package — no setup required beyond installing and importing.</p>
+
+            <h3>Installation</h3>
+            <div class="install-block">
+                <code>npm install hcg-color-picker-react</code>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+            </div>
+
+            <h3>Import</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JSX</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">import</span> ColorPicker <span class="kw">from</span> <span class="str">'hcg-color-picker-react'</span><span class="pm">;</span>
+<span class="kw">import</span> <span class="str">'hcg-color-picker-react/ColorPicker.css'</span><span class="pm">;</span></code></pre>
+            </div>
+
+            <h3>Basic Usage</h3>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JSX</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">function</span> <span class="fn">App</span><span class="pm">() {</span>
+    <span class="kw">function</span> <span class="fn">handleChange</span><span class="pm">(</span>colors<span class="pm">,</span> source<span class="pm">) {</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">);</span>   <span class="cmt">// "#ff0000"</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>rgba<span class="pm">);</span>  <span class="cmt">// "rgba(255, 0, 0, 1)"</span>
+        console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>source<span class="pm">);</span>       <span class="cmt">// "drag" | "input" | "api" | "eyedropper"</span>
+    <span class="pm">}</span>
+
+    <span class="kw">return</span> <span class="pm">(</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="cmt">{/* Basic */}</span>
+            <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#ff0000"</span> <span class="atr">onChange</span>=<span class="pm">{</span>handleChange<span class="pm">}</span> <span class="tag">/&gt;</span>
+
+            <span class="cmt">{/* No alpha */}</span>
+            <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#0000ff"</span> <span class="atr">alpha</span>=<span class="pm">{</span><span class="num">false</span><span class="pm">}</span> <span class="atr">onChange</span>=<span class="pm">{</span>handleChange<span class="pm">}</span> <span class="tag">/&gt;</span>
+
+            <span class="cmt">{/* Debounced */}</span>
+            <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#9c27b0"</span> <span class="atr">debounce</span>=<span class="pm">{</span><span class="num">200</span><span class="pm">}</span> <span class="atr">onChange</span>=<span class="pm">{</span>handleChange<span class="pm">}</span> <span class="tag">/&gt;</span>
+
+            <span class="cmt">{/* Disabled */}</span>
+            <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#00ff00"</span> <span class="atr">disabled</span>=<span class="pm">{</span><span class="num">true</span><span class="pm">}</span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    <span class="pm">);</span>
+<span class="pm">}</span></code></pre>
+            </div>
+
+            <h3>Programmatic API via ref</h3>
+            <p>Use a <code>ref</code> to call methods directly from a parent component:</p>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-lang">JSX</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <pre><code><span class="kw">import</span> <span class="pm">{</span> useRef <span class="pm">}</span> <span class="kw">from</span> <span class="str">'react'</span><span class="pm">;</span>
+<span class="kw">import</span> ColorPicker <span class="kw">from</span> <span class="str">'hcg-color-picker-react'</span><span class="pm">;</span>
+
+<span class="kw">function</span> <span class="fn">App</span><span class="pm">() {</span>
+    <span class="kw">const</span> pickerRef <span class="pm">=</span> <span class="fn">useRef</span><span class="pm">(</span><span class="num">null</span><span class="pm">);</span>
+
+    <span class="kw">return</span> <span class="pm">(</span>
+        <span class="tag">&lt;div&gt;</span>
+            <span class="tag">&lt;ColorPicker</span>
+                <span class="atr">ref</span>=<span class="pm">{</span>pickerRef<span class="pm">}</span>
+                <span class="atr">color</span>=<span class="val">"#ff9800"</span>
+                <span class="atr">onChange</span>=<span class="pm">{</span>colors <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">)}</span>
+            <span class="tag">/&gt;</span>
+            <span class="tag">&lt;button</span> <span class="atr">onClick</span>=<span class="pm">{()</span> <span class="pm">=&gt;</span> pickerRef<span class="pm">.</span>current<span class="pm">.</span><span class="fn">setColor</span><span class="pm">(</span><span class="str">'#e91e63'</span><span class="pm">)}&gt;</span>Set Pink<span class="tag">&lt;/button&gt;</span>
+            <span class="tag">&lt;button</span> <span class="atr">onClick</span>=<span class="pm">{()</span> <span class="pm">=&gt;</span> <span class="fn">alert</span><span class="pm">(</span>pickerRef<span class="pm">.</span>current<span class="pm">.</span><span class="fn">getColor</span><span class="pm">().</span>hex<span class="pm">)}&gt;</span>Get Color<span class="tag">&lt;/button&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+    <span class="pm">);</span>
+<span class="pm">}</span></code></pre>
+            </div>
+
+            <h3>Props</h3>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prop</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>color</code></td>
+                            <td><span class="type-badge">string</span></td>
+                            <td><span class="default-badge">'#ff0000'</span></td>
+                            <td>Initial color — HEX, RGB, or HSL</td>
+                        </tr>
+                        <tr>
+                            <td><code>onChange</code></td>
+                            <td><span class="type-badge">function</span></td>
+                            <td><span class="default-badge">—</span></td>
+                            <td>Called with <code>(colors, source)</code> on every color change</td>
+                        </tr>
+                        <tr>
+                            <td><code>alpha</code></td>
+                            <td><span class="type-badge">boolean</span></td>
+                            <td><span class="default-badge">true</span></td>
+                            <td>Set to <code>false</code> to disable the alpha slider</td>
+                        </tr>
+                        <tr>
+                            <td><code>debounce</code></td>
+                            <td><span class="type-badge">number</span></td>
+                            <td><span class="default-badge">0</span></td>
+                            <td>ms to debounce the change event (0 = off)</td>
+                        </tr>
+                        <tr>
+                            <td><code>disabled</code></td>
+                            <td><span class="type-badge">boolean</span></td>
+                            <td><span class="default-badge">false</span></td>
+                            <td>Prevents the picker from opening</td>
+                        </tr>
+                        <tr>
+                            <td><code>className</code></td>
+                            <td><span class="type-badge">string</span></td>
+                            <td><span class="default-badge">—</span></td>
+                            <td>CSS class applied to the trigger button</td>
+                        </tr>
+                        <tr>
+                            <td><code>style</code></td>
+                            <td><span class="type-badge">object</span></td>
+                            <td><span class="default-badge">—</span></td>
+                            <td>Inline styles for the trigger button</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>Full documentation and examples: <a href="https://www.npmjs.com/package/hcg-color-picker-react" target="_blank" style="color:var(--accent);">hcg-color-picker-react on npm</a></p>
+        </section>
+
+        <hr class="divider">
+
         <!-- Browser Support -->
         <section id="browser">
             <div class="section-tag">Reference</div>
@@ -1163,6 +1404,23 @@ picker2<span class="pm">.</span><span class="fn">on</span><span class="pm">(</sp
     const p2 = new hcgColor(document.getElementById('demo2'), { color: '#2196f3' });
     const p3 = new hcgColor(document.getElementById('demo3'), { color: '#4caf50', alpha: false });
     const p4 = new hcgColor(document.getElementById('demo4'), { color: '#9c27b0', debounce: 100 });
+
+    // -- Debounce demo pickers -------------------------------------
+    let c1 = 0, c2 = 0;
+    const pd1 = new hcgColor(document.getElementById('dbd1'), {
+        color: '#e91e63', debounce: 0,
+        onChange: (colors) => {
+            document.getElementById('dbd1-count').textContent = ++c1;
+            document.getElementById('dbd1-color').textContent = colors.hex;
+        }
+    });
+    const pd2 = new hcgColor(document.getElementById('dbd2'), {
+        color: '#2196f3', debounce: 200,
+        onChange: (colors) => {
+            document.getElementById('dbd2-count').textContent = ++c2;
+            document.getElementById('dbd2-color').textContent = colors.hex;
+        }
+    });
 
     // -- Active nav link on scroll ---------------------------------
     const sections = document.querySelectorAll('section[id]');
