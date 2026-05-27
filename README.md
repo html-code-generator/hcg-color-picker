@@ -4,6 +4,13 @@ A lightweight, dependency-free color picker widget inspired by Google Chrome's b
 
 ---
 
+## Preview
+
+![Color Picker](chrome-style-color-picker.PNG)
+![Color Picker Without Alpha](chrome-style-color-picker-without-alpha.PNG)
+
+---
+
 ## Features
 
 - **No dependencies** — pure vanilla JavaScript, no libraries required
@@ -424,6 +431,30 @@ function App() {
 | `useImperativeHandle` | Exposes `setColor`, `getColor` etc. via ref |
 | `createPortal` (from `react-dom`) | Renders picker popup at `document.body` level to avoid overflow/z-index issues |
 | Unique SVG IDs per instance | Each picker generates unique gradient IDs — no conflicts with multiple instances |
+
+---
+
+## TypeScript
+
+The package ships with a bundled `hcg-color.d.ts` — no `@types/` install needed.
+
+```ts
+import hcgColor, { HcgColorSet, HcgColorSource, HcgColorOptions } from './hcg-color';
+
+const btn = document.getElementById('my-color-btn') as HTMLButtonElement;
+
+const picker = new hcgColor(btn, {
+    color:    '#ff0000',
+    alpha:    true,
+    debounce: 150,
+} satisfies HcgColorOptions);
+
+picker.on('change', (colors: HcgColorSet, source: HcgColorSource) => {
+    console.log(colors.hex);   // "#ff0000"
+    console.log(colors.rgba);  // "rgba(255, 0, 0, 1)"
+    console.log(source);       // "drag" | "input" | "api" | "eyedropper"
+});
+```
 
 ---
 
