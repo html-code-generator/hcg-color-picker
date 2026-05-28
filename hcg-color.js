@@ -1,5 +1,5 @@
 /*!
- * hcg-color-picker v2.0.0
+ * hcg-color-picker v2.0.4
  * Google Chrome style color picker — vanilla JS, lightweight, alpha support, EyeDropper API
  *
  * @author   HTML Code Generator
@@ -327,6 +327,12 @@
             state.alpha            = 1;
             instance.alpha         = 1;
             instance.alphaPosition = 130;
+            // - strip alpha from lastChange so the preview swatch and sliders agree
+            const _p   = parseColor(instance.lastChange);
+            const _rgb = HSLAToRGBA(_p.h, _p.s, _p.l, 1);
+            instance.lastChange            = RGBAToHexA(_rgb.r, _rgb.g, _rgb.b, 1);
+            instance.element.dataset.color = instance.lastChange;
+            instance.element.style.background = instance.lastChange;
         }
 
         positionPicker(instance);
@@ -367,7 +373,9 @@
             if (closing._debounceTimer) {   // flush any pending debounced change immediately
                 clearTimeout(closing._debounceTimer);
                 closing._debounceTimer = null;
-                closing._emit('change', closing._pendingColors, closing._pendingSource);
+                if (closing._pendingColors != null) {
+                    closing._emit('change', closing._pendingColors, closing._pendingSource);
+                }
                 closing._pendingColors = null;
                 closing._pendingSource = null;
             }
@@ -513,6 +521,7 @@
         // -- RGBA inputs --------------------------------------------
         els.rgbaInputs.forEach(input => {
             on(input, 'input', () => {
+                if ([...els.rgbaInputs].some(i => i.value === '')) return;
                 const [r, g, b, a] = [...els.rgbaInputs].map(i => +i.value);
                 if (!isFinite(r + g + b + a)) return;
                 if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255 || a < 0 || a > 1) return;
@@ -528,6 +537,7 @@
         // -- HSLA inputs --------------------------------------------
         els.hslaInputs.forEach(input => {
             on(input, 'input', () => {
+                if ([...els.hslaInputs].some(i => i.value === '')) return;
                 const [h, s, l, a] = [...els.hslaInputs].map(i => +i.value);
                 if (!isFinite(h + s + l + a)) return;
                 if (h < 0 || h > 360 || s < 0 || s > 100 || l < 0 || l > 100 || a < 0 || a > 1) return;
@@ -691,6 +701,13 @@
 
     hcgColor.prototype.setColor = function (color) {
         if (!isValidColorString(color)) return this;
+        // - clear any pending debounced change so it cannot fire after this programmatic set
+        if (this._debounceTimer) {
+            clearTimeout(this._debounceTimer);
+            this._debounceTimer = null;
+            this._pendingColors = null;
+            this._pendingSource = null;
+        }
         const positions = calcPositionsFromColor(color);
         const parsed    = positions.parsed;
         if (!this._alphaEnabled) parsed.a = 1;
@@ -712,6 +729,7 @@
     };
 
     hcgColor.prototype.getColor = function () {
+        if (this.lastChange === null) return null;
         const p = parseColor(this.lastChange);
         return buildColorSet(p.h, p.s, p.l, p.a);
     };
