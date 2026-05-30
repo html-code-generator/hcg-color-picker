@@ -34,13 +34,13 @@
             font-size: 15px;
         }
 
-        /* ── Layout ─────────────────────────────── */
+        /* - Layout -------------------------------------------- */
         .layout {
             display: flex;
             min-height: 100vh;
         }
 
-        /* ── Sidebar ─────────────────────────────── */
+        /* - Sidebar ------------------------------------------- */
         .sidebar {
             width: var(--nav-w);
             flex-shrink: 0;
@@ -106,7 +106,7 @@
             background: rgba(108,140,255,.07);
         }
 
-        /* ── Main ───────────────────────────────── */
+        /* - Main ---------------------------------------------- */
         .main {
             flex: 1;
             min-width: 0;
@@ -114,7 +114,7 @@
             max-width: 900px;
         }
 
-        /* ── Hero ───────────────────────────────── */
+        /* - Hero ---------------------------------------------- */
         .hero {
             margin-bottom: 64px;
         }
@@ -169,7 +169,7 @@
         .btn-primary { background: var(--accent); color: #fff; }
         .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
 
-        /* ── Demo strip ─────────────────────────── */
+        /* - Demo strip ---------------------------------------- */
         .demo-strip {
             display: flex;
             align-items: center;
@@ -198,7 +198,7 @@
         }
         .color-btn:hover { transform: scale(1.1); }
 
-        /* ── Sections ───────────────────────────── */
+        /* - Sections ------------------------------------------ */
         section { margin-bottom: 72px; scroll-margin-top: 32px; }
 
         .section-tag {
@@ -226,7 +226,7 @@
 
         p { color: var(--text-muted); margin-bottom: 14px; }
 
-        /* ── Features ───────────────────────────── */
+        /* - Features ------------------------------------------ */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -259,7 +259,7 @@
             margin: 0;
         }
 
-        /* ── Code blocks ─────────────────────────── */
+        /* - Code blocks --------------------------------------- */
         .code-block {
             position: relative;
             background: var(--bg2);
@@ -314,18 +314,18 @@
         }
 
         /* Syntax colours */
-        .kw  { color: #c792ea; }   /* keyword */
-        .fn  { color: #82aaff; }   /* function / method */
-        .str { color: #c3e88d; }   /* string */
-        .num { color: #f78c6c; }   /* number */
-        .cmt { color: #546e7a; font-style: italic; }  /* comment */
-        .cls { color: #ffcb6b; }   /* class */
-        .tag { color: #f07178; }   /* html tag */
-        .atr { color: #c792ea; }   /* attribute */
-        .val { color: #c3e88d; }   /* value */
-        .pm  { color: #89ddff; }   /* punctuation / param */
+        .kw  { color: #c792ea; }
+        .fn  { color: #82aaff; }
+        .str { color: #c3e88d; }
+        .num { color: #f78c6c; }
+        .cmt { color: #546e7a; font-style: italic; }
+        .cls { color: #ffcb6b; }
+        .tag { color: #f07178; }
+        .atr { color: #c792ea; }
+        .val { color: #c3e88d; }
+        .pm  { color: #89ddff; }
 
-        /* ── Inline code ─────────────────────────── */
+        /* - Inline code --------------------------------------- */
         p code, li code, td code {
             background: var(--bg3);
             border: 1px solid var(--border);
@@ -335,7 +335,7 @@
             color: var(--accent2);
         }
 
-        /* ── Tables ──────────────────────────────── */
+        /* - Tables -------------------------------------------- */
         .table-wrap { overflow-x: auto; margin: 16px 0; }
 
         table {
@@ -389,7 +389,7 @@
             border: 1px solid rgba(167,139,250,.2);
         }
 
-        /* ── Method cards ────────────────────────── */
+        /* - Method cards -------------------------------------- */
         .method-list { display: flex; flex-direction: column; gap: 24px; margin-top: 8px; }
 
         .method-card {
@@ -424,7 +424,7 @@
 
         .method-body p { font-size: 13.5px; margin-bottom: 10px; }
 
-        /* ── Event cards ─────────────────────────── */
+        /* - Event cards --------------------------------------- */
         .event-list { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
 
         .event-card {
@@ -452,7 +452,7 @@
 
         .event-body { padding: 16px 20px; }
 
-        /* ── Install block ───────────────────────── */
+        /* - Install block ------------------------------------- */
         .install-block {
             display: flex;
             align-items: center;
@@ -472,14 +472,14 @@
             padding: 0;
         }
 
-        /* ── Divider ─────────────────────────────── */
+        /* - Divider ------------------------------------------- */
         .divider {
             border: none;
             border-top: 1px solid var(--border);
             margin: 0 0 72px;
         }
 
-        /* ── Footer ──────────────────────────────── */
+        /* - Footer -------------------------------------------- */
         footer {
             border-top: 1px solid var(--border);
             padding: 28px 0 0;
@@ -494,7 +494,7 @@
         footer a { color: var(--text-muted); text-decoration: none; }
         footer a:hover { color: var(--accent); }
 
-        /* ── Responsive ──────────────────────────── */
+        /* - Responsive ---------------------------------------- */
         @media (max-width: 900px) {
             .sidebar { display: none; }
             .main { padding: 36px 24px 80px; }
@@ -506,11 +506,11 @@
 
 <div class="layout">
 
-    <!-- ── Sidebar ─────────────────────────────── -->
+    <!-- Sidebar -->
     <nav class="sidebar">
         <div class="sidebar-logo">
             <span>Vanilla JS</span>
-            <a href="https://www.html-code-generator.com/" target="_blank">HTML Code Generator</a>
+            <a href="https://www.html-code-generator.com/javascript/chrome-style-color-picker" target="_blank">HTML Code Generator</a>
         </div>
 
         <div class="nav-group">
@@ -537,7 +537,7 @@
         </div>
     </nav>
 
-    <!-- ── Main ─────────────────────────────────── -->
+    <!-- Main -->
     <main class="main">
 
         <!-- Hero -->
@@ -554,7 +554,7 @@
                     <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M0 0v24h24V0H0zm19.2 19.2H4.8V4.8h14.4v14.4zM8 8v8h4v-6h2v6h2V8H8z"/></svg>
                     npm
                 </a>
-                <a class="btn btn-outline" href="https://www.html-code-generator.com/" target="_blank">Website</a>
+                <a class="btn btn-outline" href="https://www.html-code-generator.com/javascript/chrome-style-color-picker" target="_blank">Website</a>
             </div>
         </div>
 
@@ -615,8 +615,8 @@
                     <span class="code-lang">HTML</span>
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 </div>
-                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.0/hcg-color.css"</span><span class="tag">&gt;</span>
-<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.0/index.umd.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.4/hcg-color.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.4/index.umd.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
             </div>
 
             <p>unpkg:</p>
@@ -625,8 +625,8 @@
                     <span class="code-lang">HTML</span>
                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                 </div>
-                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"https://unpkg.com/hcg-color-picker@2.0.0/hcg-color.css"</span><span class="tag">&gt;</span>
-<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://unpkg.com/hcg-color-picker@2.0.0/index.umd.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
+                <pre><code><span class="tag">&lt;link</span> <span class="atr">rel</span>=<span class="val">"stylesheet"</span> <span class="atr">href</span>=<span class="val">"https://unpkg.com/hcg-color-picker@2.0.4/hcg-color.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;script</span> <span class="atr">src</span>=<span class="val">"https://unpkg.com/hcg-color-picker@2.0.4/index.umd.js"</span><span class="tag">&gt;&lt;/script&gt;</span></code></pre>
             </div>
             <p>After the script loads, <code>hcgColor</code> is available as a global variable.</p>
         </section>
@@ -1015,61 +1015,17 @@ picker<span class="pm">.</span><span class="fn">enable</span><span class="pm">()
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><code>.on(event, fn)</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Subscribe to an event</td>
-                        </tr>
-                        <tr>
-                            <td><code>.off(event, fn)</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Unsubscribe a listener</td>
-                        </tr>
-                        <tr>
-                            <td><code>.setColor(color)</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Set the color programmatically, fires <code>change</code></td>
-                        </tr>
-                        <tr>
-                            <td><code>.getColor()</code></td>
-                            <td><span class="type-badge">object</span></td>
-                            <td>Returns color object with all formats</td>
-                        </tr>
-                        <tr>
-                            <td><code>.setAlphaEnabled(bool)</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Show or hide the alpha slider at runtime</td>
-                        </tr>
-                        <tr>
-                            <td><code>.open()</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Open the picker (no effect if disabled)</td>
-                        </tr>
-                        <tr>
-                            <td><code>.close()</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Close the picker</td>
-                        </tr>
-                        <tr>
-                            <td><code>.isOpen</code></td>
-                            <td><span class="type-badge">boolean</span></td>
-                            <td>Getter — <code>true</code> if this picker is currently open</td>
-                        </tr>
-                        <tr>
-                            <td><code>.enable()</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Re-enable a disabled picker</td>
-                        </tr>
-                        <tr>
-                            <td><code>.disable()</code></td>
-                            <td><span class="type-badge">this</span></td>
-                            <td>Disable the picker — blocks opening on click</td>
-                        </tr>
-                        <tr>
-                            <td><code>.destroy()</code></td>
-                            <td><span class="type-badge">void</span></td>
-                            <td>Remove instance, clean up all listeners</td>
-                        </tr>
+                        <tr><td><code>.on(event, fn)</code></td><td><span class="type-badge">this</span></td><td>Subscribe to an event</td></tr>
+                        <tr><td><code>.off(event, fn)</code></td><td><span class="type-badge">this</span></td><td>Unsubscribe a listener</td></tr>
+                        <tr><td><code>.setColor(color)</code></td><td><span class="type-badge">this</span></td><td>Set the color programmatically, fires <code>change</code></td></tr>
+                        <tr><td><code>.getColor()</code></td><td><span class="type-badge">object</span></td><td>Returns color object with all formats</td></tr>
+                        <tr><td><code>.setAlphaEnabled(bool)</code></td><td><span class="type-badge">this</span></td><td>Show or hide the alpha slider at runtime</td></tr>
+                        <tr><td><code>.open()</code></td><td><span class="type-badge">this</span></td><td>Open the picker (no effect if disabled)</td></tr>
+                        <tr><td><code>.close()</code></td><td><span class="type-badge">this</span></td><td>Close the picker</td></tr>
+                        <tr><td><code>.isOpen</code></td><td><span class="type-badge">boolean</span></td><td>Getter — <code>true</code> if this picker is currently open</td></tr>
+                        <tr><td><code>.enable()</code></td><td><span class="type-badge">this</span></td><td>Re-enable a disabled picker</td></tr>
+                        <tr><td><code>.disable()</code></td><td><span class="type-badge">this</span></td><td>Disable the picker — blocks opening on click</td></tr>
+                        <tr><td><code>.destroy()</code></td><td><span class="type-badge">void</span></td><td>Remove instance, clean up all listeners</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1086,28 +1042,12 @@ picker<span class="pm">.</span><span class="fn">enable</span><span class="pm">()
             <div class="table-wrap">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Event</th>
-                            <th>Callback data</th>
-                            <th>Description</th>
-                        </tr>
+                        <tr><th>Event</th><th>Callback data</th><th>Description</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><code>change</code></td>
-                            <td><span class="type-badge">colors, source</span></td>
-                            <td>Fired every time the color changes</td>
-                        </tr>
-                        <tr>
-                            <td><code>open</code></td>
-                            <td><span class="type-badge">hex string</span></td>
-                            <td>Fired when the picker opens</td>
-                        </tr>
-                        <tr>
-                            <td><code>close</code></td>
-                            <td><span class="type-badge">hex string</span></td>
-                            <td>Fired when the picker closes</td>
-                        </tr>
+                        <tr><td><code>change</code></td><td><span class="type-badge">colors, source</span></td><td>Fired every time the color changes</td></tr>
+                        <tr><td><code>open</code></td><td><span class="type-badge">hex string</span></td><td>Fired when the picker opens</td></tr>
+                        <tr><td><code>close</code></td><td><span class="type-badge">hex string</span></td><td>Fired when the picker closes</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1249,108 +1189,16 @@ picker2<span class="pm">.</span><span class="fn">on</span><span class="pm">(</sp
 
     <span class="kw">return</span> <span class="pm">(</span>
         <span class="tag">&lt;div&gt;</span>
-            <span class="cmt">{/* Basic */}</span>
             <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#ff0000"</span> <span class="atr">onChange</span>=<span class="pm">{</span>handleChange<span class="pm">}</span> <span class="tag">/&gt;</span>
-
-            <span class="cmt">{/* No alpha */}</span>
             <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#0000ff"</span> <span class="atr">alpha</span>=<span class="pm">{</span><span class="num">false</span><span class="pm">}</span> <span class="atr">onChange</span>=<span class="pm">{</span>handleChange<span class="pm">}</span> <span class="tag">/&gt;</span>
-
-            <span class="cmt">{/* Debounced */}</span>
             <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#9c27b0"</span> <span class="atr">debounce</span>=<span class="pm">{</span><span class="num">200</span><span class="pm">}</span> <span class="atr">onChange</span>=<span class="pm">{</span>handleChange<span class="pm">}</span> <span class="tag">/&gt;</span>
-
-            <span class="cmt">{/* Disabled */}</span>
             <span class="tag">&lt;ColorPicker</span> <span class="atr">color</span>=<span class="val">"#00ff00"</span> <span class="atr">disabled</span>=<span class="pm">{</span><span class="num">true</span><span class="pm">}</span> <span class="tag">/&gt;</span>
         <span class="tag">&lt;/div&gt;</span>
     <span class="pm">);</span>
 <span class="pm">}</span></code></pre>
             </div>
 
-            <h3>Programmatic API via ref</h3>
-            <p>Use a <code>ref</code> to call methods directly from a parent component:</p>
-            <div class="code-block">
-                <div class="code-header">
-                    <span class="code-lang">JSX</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code><span class="kw">import</span> <span class="pm">{</span> useRef <span class="pm">}</span> <span class="kw">from</span> <span class="str">'react'</span><span class="pm">;</span>
-<span class="kw">import</span> ColorPicker <span class="kw">from</span> <span class="str">'hcg-color-picker-react'</span><span class="pm">;</span>
-
-<span class="kw">function</span> <span class="fn">App</span><span class="pm">() {</span>
-    <span class="kw">const</span> pickerRef <span class="pm">=</span> <span class="fn">useRef</span><span class="pm">(</span><span class="num">null</span><span class="pm">);</span>
-
-    <span class="kw">return</span> <span class="pm">(</span>
-        <span class="tag">&lt;div&gt;</span>
-            <span class="tag">&lt;ColorPicker</span>
-                <span class="atr">ref</span>=<span class="pm">{</span>pickerRef<span class="pm">}</span>
-                <span class="atr">color</span>=<span class="val">"#ff9800"</span>
-                <span class="atr">onChange</span>=<span class="pm">{</span>colors <span class="pm">=&gt;</span> console<span class="pm">.</span><span class="fn">log</span><span class="pm">(</span>colors<span class="pm">.</span>hex<span class="pm">)}</span>
-            <span class="tag">/&gt;</span>
-            <span class="tag">&lt;button</span> <span class="atr">onClick</span>=<span class="pm">{()</span> <span class="pm">=&gt;</span> pickerRef<span class="pm">.</span>current<span class="pm">.</span><span class="fn">setColor</span><span class="pm">(</span><span class="str">'#e91e63'</span><span class="pm">)}&gt;</span>Set Pink<span class="tag">&lt;/button&gt;</span>
-            <span class="tag">&lt;button</span> <span class="atr">onClick</span>=<span class="pm">{()</span> <span class="pm">=&gt;</span> <span class="fn">alert</span><span class="pm">(</span>pickerRef<span class="pm">.</span>current<span class="pm">.</span><span class="fn">getColor</span><span class="pm">().</span>hex<span class="pm">)}&gt;</span>Get Color<span class="tag">&lt;/button&gt;</span>
-        <span class="tag">&lt;/div&gt;</span>
-    <span class="pm">);</span>
-<span class="pm">}</span></code></pre>
-            </div>
-
-            <h3>Props</h3>
-            <div class="table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Prop</th>
-                            <th>Type</th>
-                            <th>Default</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>color</code></td>
-                            <td><span class="type-badge">string</span></td>
-                            <td><span class="default-badge">'#ff0000'</span></td>
-                            <td>Initial color — HEX, RGB, or HSL</td>
-                        </tr>
-                        <tr>
-                            <td><code>onChange</code></td>
-                            <td><span class="type-badge">function</span></td>
-                            <td><span class="default-badge">—</span></td>
-                            <td>Called with <code>(colors, source)</code> on every color change</td>
-                        </tr>
-                        <tr>
-                            <td><code>alpha</code></td>
-                            <td><span class="type-badge">boolean</span></td>
-                            <td><span class="default-badge">true</span></td>
-                            <td>Set to <code>false</code> to disable the alpha slider</td>
-                        </tr>
-                        <tr>
-                            <td><code>debounce</code></td>
-                            <td><span class="type-badge">number</span></td>
-                            <td><span class="default-badge">0</span></td>
-                            <td>ms to debounce the change event (0 = off)</td>
-                        </tr>
-                        <tr>
-                            <td><code>disabled</code></td>
-                            <td><span class="type-badge">boolean</span></td>
-                            <td><span class="default-badge">false</span></td>
-                            <td>Prevents the picker from opening</td>
-                        </tr>
-                        <tr>
-                            <td><code>className</code></td>
-                            <td><span class="type-badge">string</span></td>
-                            <td><span class="default-badge">—</span></td>
-                            <td>CSS class applied to the trigger button</td>
-                        </tr>
-                        <tr>
-                            <td><code>style</code></td>
-                            <td><span class="type-badge">object</span></td>
-                            <td><span class="default-badge">—</span></td>
-                            <td>Inline styles for the trigger button</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <p>Full documentation and examples: <a href="https://www.npmjs.com/package/hcg-color-picker-react" target="_blank" style="color:var(--accent);">hcg-color-picker-react on npm</a></p>
+            <p>Full documentation: <a href="https://www.npmjs.com/package/hcg-color-picker-react" target="_blank" style="color:var(--accent);">hcg-color-picker-react on npm</a></p>
         </section>
 
         <hr class="divider">
@@ -1363,24 +1211,12 @@ picker2<span class="pm">.</span><span class="fn">on</span><span class="pm">(</sp
             <div class="table-wrap">
                 <table>
                     <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>Support</th>
-                        </tr>
+                        <tr><th>Feature</th><th>Support</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Color picker UI</td>
-                            <td>All modern browsers</td>
-                        </tr>
-                        <tr>
-                            <td>Touch events</td>
-                            <td>iOS Safari, Android Chrome</td>
-                        </tr>
-                        <tr>
-                            <td>EyeDropper API</td>
-                            <td>Chrome 95+, Edge 95+ (not Firefox / Safari)</td>
-                        </tr>
+                        <tr><td>Color picker UI</td><td>All modern browsers</td></tr>
+                        <tr><td>Touch events</td><td>iOS Safari, Android Chrome</td></tr>
+                        <tr><td>EyeDropper API</td><td>Chrome 95+, Edge 95+ (not Firefox / Safari)</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1388,7 +1224,7 @@ picker2<span class="pm">.</span><span class="fn">on</span><span class="pm">(</sp
 
         <!-- Footer -->
         <footer>
-            <span>© 2025 <a href="https://www.html-code-generator.com/" target="_blank">HTML Code Generator</a></span>
+            <span>© 2026 <a href="https://www.html-code-generator.com/javascript/chrome-style-color-picker" target="_blank">HTML Code Generator</a></span>
             <a href="https://github.com/html-code-generator/hcg-color-picker" target="_blank">GitHub</a>
             <a href="https://www.npmjs.com/package/hcg-color-picker" target="_blank">npm</a>
             <span style="margin-left:auto;">MIT License</span>
