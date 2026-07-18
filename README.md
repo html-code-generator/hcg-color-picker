@@ -1,6 +1,12 @@
-# Google Chrome Style Color Picker
+# Google Chrome Style Color Picker (hcg-color-picker)
 
 A lightweight, dependency-free color picker widget inspired by Google Chrome's built-in color picker. Supports multiple instances, alpha control, touch input, and the EyeDropper API.
+
+- **Website:** [html-code-generator.com/javascript/chrome-style-color-picker](https://www.html-code-generator.com/javascript/chrome-style-color-picker)
+
+- **npm:** [npmjs.com/package/hcg-color-picker](https://www.npmjs.com/package/hcg-color-picker)
+
+Full docs and live demos: [website](https://www.html-code-generator.com/javascript/chrome-style-color-picker)
 
 ---
 
@@ -13,30 +19,62 @@ A lightweight, dependency-free color picker widget inspired by Google Chrome's b
 
 ## Features
 
-- **No dependencies** — pure vanilla JavaScript, no libraries required
-- **Multiple instances** — attach a picker to any number of buttons, each remembers its own color
-- **Single shared UI** — one picker element is reused across all instances, keeping memory usage minimal
-- **Three color modes** — switch between HEX, RGBA, and HSLA input formats
-- **Alpha / opacity control** — full transparency support, can be enabled or disabled per instance
-- **EyeDropper API** — pick any color from the screen (supported browsers only)
-- **Touch support** — works on mobile and tablet devices
-- **Color preview swatch** — live preview inside the picker
-- **Keyboard accessible** — color text inputs are fully keyboard navigable
-- **`data-color` attribute** — current color is always available on the trigger element via `element.dataset.color`
-- **Event system** — subscribe and unsubscribe to color change events
-- **Programmatic API** — set color, open/close, enable/disable, and destroy instances at runtime
-- **`open` / `close` events** — listen for when the picker is shown or hidden
-- **Debounce option** — built-in change event throttling for expensive handlers
+- **No dependencies** - pure vanilla JavaScript, no libraries required
+- **Multiple instances** - attach a picker to any number of buttons, each remembers its own color
+- **Single shared UI** - one picker element is reused across all instances, keeping memory usage minimal
+- **Three color modes** - switch between HEX, RGBA, and HSLA input formats
+- **Alpha / opacity control** - full transparency support, can be enabled or disabled per instance
+- **EyeDropper API** - pick any color from the screen (supported browsers only)
+- **Touch support** - works on mobile and tablet devices
+- **Color preview swatch** - live preview inside the picker
+- **Keyboard accessible** - color text inputs are fully keyboard navigable
+- **`data-color` attribute** - current color is always available on the trigger element via `element.dataset.color`
+- **Event system** - subscribe and unsubscribe to color change events
+- **Programmatic API** - set color, open/close, enable/disable, and destroy instances at runtime
+- **Destroy by element** - `hcgColor.get()`, `hcgColor.destroy()`, and `hcgColor.destroyAll()` without keeping an instance reference
+- **`open` / `close` events** - listen for when the picker is shown or hidden
+- **Debounce option** - built-in change event throttling for expensive handlers
 
 ---
 
 ## Installation
 
-Include the script in your HTML file:
+### Download
 
 ```html
 <link rel="stylesheet" href="hcg-color.css">
 <script src="hcg-color.js"></script>
+```
+
+Minified builds are available in [`dist/hcg-color.min.js`](dist/hcg-color.min.js) and [`dist/hcg-color.min.css`](dist/hcg-color.min.css).
+
+### CDN
+
+**jsDelivr:**
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.5/hcg-color.css">
+<script src="https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.5/hcg-color.js"></script>
+```
+
+**unpkg:**
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/hcg-color-picker@2.0.5/hcg-color.css">
+<script src="https://unpkg.com/hcg-color-picker@2.0.5/hcg-color.js"></script>
+```
+
+After the script loads, `hcgColor` is available as a global variable.
+
+### npm
+
+```bash
+npm install hcg-color-picker
+```
+
+```js
+import hcgColor from 'hcg-color-picker';
+import 'hcg-color-picker/hcg-color.css';
 ```
 
 ---
@@ -69,8 +107,8 @@ new hcgColor(element, options)
 
 | Parameter | Type          | Required | Description                |
 |-----------|---------------|----------|----------------------------|
-| `element` | `HTMLElement` | ✅        | The trigger button element |
-| `options` | `object`      | ❌        | Configuration (see below)  |
+| `element` | `HTMLElement` | Yes      | The trigger button element |
+| `options` | `object`      | No       | Configuration (see below)  |
 
 ---
 
@@ -78,13 +116,13 @@ new hcgColor(element, options)
 
 | Option     | Type       | Default     | Description                                         |
 |------------|------------|-------------|-----------------------------------------------------|
-| `color`    | `string`   | `data-color` attr or `'#ff0000'` | Initial color — HEX, RGB, HSL formats |
-| `onChange` | `function` | —           | Shorthand change callback (same as `.on('change')`) |
-| `onOpen`   | `function` | —           | Shorthand open callback (same as `.on('open')`)     |
-| `onClose`  | `function` | —           | Shorthand close callback (same as `.on('close')`)   |
+| `color`    | `string`   | `data-color` attr or `'#ff0000'` | Initial color - HEX, RGB, HSL formats |
+| `onChange` | `function` | -           | Shorthand change callback (same as `.on('change')`) |
+| `onOpen`   | `function` | -           | Shorthand open callback (same as `.on('open')`)     |
+| `onClose`  | `function` | -           | Shorthand close callback (same as `.on('close')`)   |
 | `alpha`    | `boolean`  | `true`      | Set to `false` to disable alpha control             |
 | `debounce` | `number`   | `0`         | ms to debounce the change event during drag (0 = off) |
-| `disabled` | `boolean`  | `false`     | Start in disabled state — also reads `element.disabled` |
+| `disabled` | `boolean`  | `false`     | Start in disabled state - also reads `element.disabled` |
 
 ```js
 const picker = new hcgColor(btn, {
@@ -172,42 +210,61 @@ picker.setAlphaEnabled(false); // hide alpha controls
 picker.setAlphaEnabled(true);  // show alpha controls
 ```
 
-### `.open()`
-Programmatically open the picker. Has no effect if the picker is disabled.
+### `.open()` / `.close()`
+Programmatically open or close the picker.
 ```js
 picker.open();
-```
-
-### `.close()`
-Programmatically close the picker.
-```js
 picker.close();
-```
 
-### `.isOpen` *(getter)*
-Returns `true` if this picker is currently open, `false` otherwise.
-```js
 if (picker.isOpen) {
     picker.close();
 }
 ```
 
-### `.disable()`
-Disable the picker — prevents the picker from opening on click.
+### `.disable()` / `.enable()`
+Disable or re-enable the picker.
 ```js
 picker.disable();
-```
-
-### `.enable()`
-Re-enable a previously disabled picker.
-```js
 picker.enable();
 ```
 
 ### `.destroy()`
-Fully remove the picker instance — cleans up event listeners, clears state, and removes the color from the element.
+Fully remove the picker instance - cleans up event listeners, clears state, and removes the color from the element.
 ```js
 picker.destroy();
+```
+
+---
+
+## Static Methods
+
+Look up or destroy a picker by trigger element without keeping the instance returned from `new hcgColor()`. Each trigger stores its instance on `element._hcgColor`.
+
+### `hcgColor.get(element | selector)`
+Returns the picker instance for a trigger element, or `null`.
+
+```js
+const picker = hcgColor.get('#my-btn');
+if (picker) {
+    picker.setColor('#00ff00');
+}
+```
+
+### `hcgColor.destroy(element | selector)`
+Destroy a picker by element or CSS selector. Returns `true` if an instance was found and destroyed, otherwise `false`.
+
+```js
+new hcgColor(document.getElementById('my-btn'), { color: '#ff0000' });
+
+// later, no saved reference needed
+hcgColor.destroy('#my-btn'); // true
+```
+
+### `hcgColor.destroyAll()`
+Destroy every active picker instance.
+
+```js
+hcgColor.destroyAll();
 ```
 
 ---
@@ -240,8 +297,6 @@ picker.on('close', hex => console.log('closed with:', hex));
 
 ### `source` string
 
-The second argument to the `change` callback identifies what triggered the change:
-
 | Value          | Triggered by                              |
 |----------------|-------------------------------------------|
 | `"drag"`       | Dragging the color box, hue, or alpha slider |
@@ -249,18 +304,11 @@ The second argument to the `change` callback identifies what triggered the chang
 | `"api"`        | Calling `.setColor()` programmatically    |
 | `"eyedropper"` | Picking a color with the EyeDropper API   |
 
-```js
-picker.on('change', (colors, source) => {
-    if (source === 'drag') { /* update live preview only */ }
-    if (source === 'api')  { /* skip — we triggered this */ }
-});
-```
-
 ---
 
 ## Multiple Instances
 
-Each instance is independent — they share one picker UI but each stores its own color state.
+Each instance is independent - they share one picker UI but each stores its own color state.
 
 ```js
 const picker1 = new hcgColor(document.getElementById('btn1'), { color: '#ff0000' });
@@ -275,13 +323,18 @@ picker2.on('change', colors => console.log('Picker 2:', colors.hex));
 
 ## Reading Color Without an Instance Reference
 
-The current color is always stored on the trigger element via `data-color`, so you can read it anywhere without keeping a reference to the picker instance:
+The current color is always stored on the trigger element via `data-color`:
 
 ```js
-// On form submit, collect all picker colors
 document.querySelectorAll('.color-btn').forEach(btn => {
     console.log(btn.dataset.color); // "#ff0000"
 });
+```
+
+To destroy without saving the instance:
+
+```js
+hcgColor.destroy('.color-btn');
 ```
 
 ---
@@ -290,171 +343,25 @@ document.querySelectorAll('.color-btn').forEach(btn => {
 
 A dedicated React component is available as a separate package.
 
-### Installation
-
 ```bash
 npm install hcg-color-picker-react
 ```
 
-### Import
-
-```jsx
-import ColorPicker from 'hcg-color-picker-react';
-import 'hcg-color-picker-react/ColorPicker.css';
-```
-
-> `createPortal` is used internally and imported from `react-dom` — no extra setup needed.
-
----
-
-### Props
-
-| Prop        | Type       | Default     | Description                                       |
-|-------------|------------|-------------|---------------------------------------------------|
-| `color`     | `string`   | `'#ff0000'` | Initial color — HEX, RGB, HSL formats             |
-| `onChange`  | `function` | —           | Called with `(colors, source)` every time the color changes |
-| `onOpen`    | `function` | —           | Called with the current hex when the picker opens |
-| `onClose`   | `function` | —           | Called with the final hex when the picker closes  |
-| `alpha`     | `boolean`  | `true`      | Set to `false` to disable alpha control           |
-| `debounce`  | `number`   | `0`         | ms to debounce the change event (0 = off)         |
-| `disabled`  | `boolean`  | `false`     | Prevents the picker from opening                  |
-| `className` | `string`   | —           | CSS class applied to the trigger button           |
-| `style`     | `object`   | —           | Inline styles for the trigger button              |
-
----
-
-### Basic usage
-
 ```jsx
 import ColorPicker from 'hcg-color-picker-react';
 import 'hcg-color-picker-react/ColorPicker.css';
 
 function App() {
-    function handleChange(colors, source) {
-        console.log(colors.hex);   // "#ff0000"
-        console.log(colors.rgba);  // "rgba(255, 0, 0, 1)"
-        console.log(colors.hsla);  // "hsla(0, 100%, 50%, 1)"
-        console.log(source);       // "drag" | "input" | "api" | "eyedropper"
-    }
-
     return (
-        <div>
-            {/* Basic */}
-            <ColorPicker color="#ff0000" onChange={handleChange} />
-
-            {/* No alpha */}
-            <ColorPicker color="#0000ff" alpha={false} onChange={handleChange} />
-
-            {/* Debounced — change fires 200ms after the user stops dragging */}
-            <ColorPicker color="#9c27b0" debounce={200} onChange={handleChange} />
-
-            {/* Disabled */}
-            <ColorPicker color="#00ff00" disabled={true} />
-        </div>
-    );
-}
-
-export default App;
-```
-
----
-
-### Programmatic API via `ref`
-
-Use `ref` to call methods directly from a parent component:
-
-```jsx
-import { useRef } from 'react';
-import ColorPicker from 'hcg-color-picker-react';
-import 'hcg-color-picker-react/ColorPicker.css';
-
-function App() {
-    const pickerRef = useRef(null);
-
-    return (
-        <div>
-            <ColorPicker
-                ref={pickerRef}
-                color="#ff9800"
-                onChange={colors => console.log(colors.hex)}
-            />
-
-            <button onClick={() => pickerRef.current.setColor('#e91e63')}>Set Pink</button>
-            <button onClick={() => alert(pickerRef.current.getColor().hex)}>Get Color</button>
-            <button onClick={() => pickerRef.current.open()}>Open</button>
-            <button onClick={() => pickerRef.current.close()}>Close</button>
-            <button onClick={() => pickerRef.current.setAlphaEnabled(false)}>Disable Alpha</button>
-        </div>
-    );
-}
-
-export default App;
-```
-
-### Ref methods
-
-| Method                   | Description                              |
-|--------------------------|------------------------------------------|
-| `.setColor(color)`       | Programmatically set the color           |
-| `.getColor()`            | Returns current color as an object       |
-| `.setAlphaEnabled(bool)` | Show or hide the alpha slider at runtime |
-| `.open()`                | Programmatically open the picker         |
-| `.close()`               | Programmatically close the picker        |
-| `.enable()`              | Enable the picker                        |
-| `.disable()`             | Disable the picker                       |
-
----
-
-### Multiple instances
-
-Each `<ColorPicker>` is a fully independent instance — no shared state between them:
-
-```jsx
-function App() {
-    return (
-        <div>
-            <ColorPicker color="#f44336" onChange={c => console.log('Red picker:', c.hex)} />
-            <ColorPicker color="#4caf50" onChange={c => console.log('Green picker:', c.hex)} />
-            <ColorPicker color="#2196f3" alpha={false} onChange={c => console.log('Blue picker:', c.hex)} />
-        </div>
+        <ColorPicker
+            color="#ff0000"
+            onChange={(colors, source) => console.log(colors.hex, source)}
+        />
     );
 }
 ```
 
----
-
-### React — Key notes
-
-| | Reason |
-|---|---|
-| `forwardRef` | Allows parent components to access ref methods |
-| `useImperativeHandle` | Exposes `setColor`, `getColor` etc. via ref |
-| `createPortal` (from `react-dom`) | Renders picker popup at `document.body` level to avoid overflow/z-index issues |
-| Unique SVG IDs per instance | Each picker generates unique gradient IDs — no conflicts with multiple instances |
-
----
-
-## TypeScript
-
-The package ships with a bundled `hcg-color.d.ts` — no `@types/` install needed.
-
-```ts
-import hcgColor, { HcgColorSet, HcgColorSource, HcgColorOptions } from './hcg-color';
-
-const btn = document.getElementById('my-color-btn') as HTMLButtonElement;
-
-const picker = new hcgColor(btn, {
-    color:    '#ff0000',
-    alpha:    true,
-    debounce: 150,
-} satisfies HcgColorOptions);
-
-picker.on('change', (colors: HcgColorSet, source: HcgColorSource) => {
-    console.log(colors.hex);   // "#ff0000"
-    console.log(colors.rgba);  // "rgba(255, 0, 0, 1)"
-    console.log(source);       // "drag" | "input" | "api" | "eyedropper"
-});
-```
+Full documentation: [hcg-color-picker-react on npm](https://www.npmjs.com/package/hcg-color-picker-react)
 
 ---
 
@@ -465,6 +372,20 @@ picker.on('change', (colors: HcgColorSet, source: HcgColorSource) => {
 | Color picker UI | All modern browsers                       |
 | Touch events    | iOS Safari, Android Chrome               |
 | EyeDropper API  | Chrome 95+, Edge 95+ (not Firefox/Safari) |
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## Links
+
+- Website: https://www.html-code-generator.com/javascript/chrome-style-color-picker
+- GitHub: https://github.com/html-code-generator/hcg-color-picker
+- npm: https://www.npmjs.com/package/hcg-color-picker
 
 ---
 

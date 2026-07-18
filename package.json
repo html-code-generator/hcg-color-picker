@@ -1,0 +1,37 @@
+{
+  "name": "hcg-color-picker",
+  "version": "2.0.5",
+  "description": "Lightweight dependency-free vanilla JavaScript Chrome-style color picker with alpha channel, HEX/RGB/HSL inputs, EyeDropper API, copy to clipboard, debounced callbacks, and a shared floating panel for multiple instances.",
+  "main": "hcg-color.js",
+  "style": "hcg-color.css",
+  "files": [
+    "hcg-color.js",
+    "hcg-color.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "color-picker",
+    "color",
+    "chrome-style",
+    "alpha",
+    "eyedropper",
+    "hex",
+    "rgba",
+    "hsla",
+    "vanilla-js",
+    "javascript",
+    "no-dependencies",
+    "ui-component"
+  ],
+  "homepage": "https://www.html-code-generator.com/javascript/chrome-style-color-picker",
+  "bugs": {
+    "url": "https://github.com/html-code-generator/hcg-color-picker/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/html-code-generator/hcg-color-picker.git"
+  },
+  "license": "MIT",
+  "author": "HTML Code Generator (https://www.html-code-generator.com/)"
+}
