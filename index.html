@@ -328,6 +328,7 @@ new hcgColor(document.getElementById("picker-scroll"), { color: "#2563eb" });</c
         <button class="demo-btn" type="button" id="btn-close">Close</button>
         <button class="demo-btn" type="button" id="btn-red">Set red</button>
         <button class="demo-btn" type="button" id="btn-teal">Set teal</button>
+        <button class="demo-btn" type="button" id="btn-silent">Set silent</button>
         <button class="demo-btn" type="button" id="btn-toggle">Disable / Enable</button>
       </div>
       <div class="output-box" id="api-output">isOpen: false</div>
@@ -339,6 +340,7 @@ new hcgColor(document.getElementById("picker-scroll"), { color: "#2563eb" });</c
 api.open();
 api.close();
 api.setColor("#ff0000");
+api.setColor("#ff0000", true); // silent: no change event
 const colors = api.getColor();
 api.disable();
 api.enable();</code></pre>
@@ -467,6 +469,10 @@ new hcgColor(document.getElementById("picker-m3"), { color: "#3b82f6", onChange:
   });
   document.getElementById("btn-red").addEventListener("click", () => apiPicker.setColor("#dc2626"));
   document.getElementById("btn-teal").addEventListener("click", () => apiPicker.setColor("#0d9488"));
+  document.getElementById("btn-silent").addEventListener("click", () => {
+    apiPicker.setColor("#f59e0b", true);
+    log("API picker set silent (no change event)");
+  });
   document.getElementById("btn-toggle").addEventListener("click", () => {
     apiDisabled = !apiDisabled;
     if (apiDisabled) apiPicker.disable();

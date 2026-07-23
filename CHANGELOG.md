@@ -2,6 +2,12 @@
 
 All notable changes to hcg-color-picker are documented here.
 
+## [2.0.6] - 2026-07-23
+
+### Added
+
+- `setColor(color, silent)` - pass `true` as the second argument to update the swatch and panel without firing the `change` event.
+
 ## [2.0.5] - 2026-07-18
 
 ### Added

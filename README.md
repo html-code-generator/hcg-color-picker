@@ -53,15 +53,15 @@ Minified builds are available in [`dist/hcg-color.min.js`](dist/hcg-color.min.js
 **jsDelivr:**
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.5/hcg-color.css">
-<script src="https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.5/hcg-color.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.6/hcg-color.css">
+<script src="https://cdn.jsdelivr.net/npm/hcg-color-picker@2.0.6/hcg-color.js"></script>
 ```
 
 **unpkg:**
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/hcg-color-picker@2.0.5/hcg-color.css">
-<script src="https://unpkg.com/hcg-color-picker@2.0.5/hcg-color.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/hcg-color-picker@2.0.6/hcg-color.css">
+<script src="https://unpkg.com/hcg-color-picker@2.0.6/hcg-color.js"></script>
 ```
 
 After the script loads, `hcgColor` is available as a global variable.
@@ -177,11 +177,12 @@ picker.on('change', onChange);
 picker.off('change', onChange);
 ```
 
-### `.setColor(color)`
-Programmatically set the color. Fires the `change` event.
+### `.setColor(color, silent?)`
+Programmatically set the color. Fires the `change` event unless `silent` is `true`.
 ```js
 picker.setColor('#00ff00');
 picker.setColor('rgb(0, 255, 0)');
+picker.setColor('#00ff00', true); // update swatch/panel without change event
 ```
 
 ### `.getColor()`

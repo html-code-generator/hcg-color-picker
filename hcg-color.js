@@ -1,5 +1,5 @@
 /*!
- * hcg-color-picker v2.0.5
+ * hcg-color-picker v2.0.6
  * Google Chrome style color picker — vanilla JS, lightweight, alpha support, EyeDropper API
  *
  * @author   HTML Code Generator
@@ -825,7 +825,11 @@
         get: function () { return state.instance === this && state.pickerOpen; },
     });
 
-    hcgColor.prototype.setColor = function (color) {
+    /**
+     * @param {string}  color  - hex, rgb(), rgba(), hsl(), or hsla()
+     * @param {boolean} [silent=false] - when true, update the swatch/panel without firing change
+     */
+    hcgColor.prototype.setColor = function (color, silent) {
         if (!isValidColorString(color)) return this;
         // - clear any pending debounced change so it cannot fire after this programmatic set
         if (this._debounceTimer) {
@@ -850,7 +854,9 @@
             updateDisplays(parsed);
             els.colorPreview.setAttribute('fill', hexa);
         }
-        this._emit('change', buildColorSet(parsed.h, parsed.s, parsed.l, parsed.a), 'api');
+        if (!silent) {
+            this._emit('change', buildColorSet(parsed.h, parsed.s, parsed.l, parsed.a), 'api');
+        }
         return this;
     };
 
